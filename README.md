@@ -1,6 +1,6 @@
 # Gwent Board
 
-Love playing classical gwent but find it hard to keep track of the score? This is the app for you!
+Love playing classical Gwent but find it hard to keep track of the score? This is the app for you!
 
 ## Resources
 
