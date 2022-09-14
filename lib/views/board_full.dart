@@ -9,7 +9,6 @@ import 'package:gwentboard/components/game/game_control_state.dart';
 import 'package:gwentboard/components/game/game_score.dart';
 import 'package:gwentboard/components/game/game_control_weather.dart';
 import 'package:gwentboard/components/pack/pack_widget.dart';
-import 'package:gwentboard/constants/gwent_icons.dart';
 
 class FullBoardPage extends StatelessWidget {
   const FullBoardPage({Key? key}) : super(key: key);
