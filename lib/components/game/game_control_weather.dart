@@ -1,41 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gwentboard/bloc/game/game_bloc.dart';
 import 'package:weather_icons/weather_icons.dart';
 
-class GameWeatherControl extends StatelessWidget {
-  const GameWeatherControl({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: const [
-        FrostWeatherSwitch(),
-        FogWeatherSwitch(),
-        RainWeatherSwitch(),
-      ],
-    );
-  }
-}
+import 'package:gwentboard/bloc/game/game_bloc.dart';
+import 'package:gwentboard/utils/board_sizer.dart';
 
 abstract class WeatherIconSwitch extends StatelessWidget {
   final String weatherIconOn;
   final String weatherIconOff;
-  final double size;
 
   const WeatherIconSwitch({
     Key? key,
     required this.weatherIconOn,
     required this.weatherIconOff,
-    this.size = 40,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GameBloc, GameState>(
       builder: (context, state) {
-        final bool isOn = _getIsOn(state);
+        final bool isOn = _isOn(state);
         List<Widget> weatherIcons = [
           _wrapIcon(context, isOn, weatherIconOn),
           _wrapIcon(context, !isOn, weatherIconOff),
@@ -45,11 +29,18 @@ abstract class WeatherIconSwitch extends StatelessWidget {
           onTap: () {
             _onTap(context);
           },
-          child: SizedBox(
-            height: size,
-            width: 50,
-            child: Stack(
-              children: weatherIcons,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal:
+                  context.read<BoardSizer>().controlIconPaddingHorizontal,
+              vertical: context.read<BoardSizer>().controlIconPaddingVertical,
+            ),
+            child: SizedBox(
+              height: context.read<BoardSizer>().controlIconSize * (5 / 4),
+              width: context.read<BoardSizer>().controlIconSize * (4 / 3),
+              child: Stack(
+                children: weatherIcons,
+              ),
             ),
           ),
         );
@@ -65,12 +56,14 @@ abstract class WeatherIconSwitch extends StatelessWidget {
         color: isFront
             ? Theme.of(context).colorScheme.secondary
             : Theme.of(context).colorScheme.onSecondary,
-        size: isFront ? 30 : 15,
+        size: isFront
+            ? context.read<BoardSizer>().controlIconSize
+            : context.read<BoardSizer>().controlIconSize / 2,
       ),
     );
   }
 
-  bool _getIsOn(GameState state);
+  bool _isOn(GameState state);
 
   void _onTap(BuildContext context);
 }
@@ -85,7 +78,7 @@ class FrostWeatherSwitch extends WeatherIconSwitch {
         );
 
   @override
-  bool _getIsOn(GameState state) {
+  bool _isOn(GameState state) {
     return state.isFrost;
   }
 
@@ -105,7 +98,7 @@ class FogWeatherSwitch extends WeatherIconSwitch {
         );
 
   @override
-  bool _getIsOn(GameState state) {
+  bool _isOn(GameState state) {
     return state.isFog;
   }
 
@@ -125,7 +118,7 @@ class RainWeatherSwitch extends WeatherIconSwitch {
         );
 
   @override
-  bool _getIsOn(GameState state) {
+  bool _isOn(GameState state) {
     return state.isRain;
   }
 

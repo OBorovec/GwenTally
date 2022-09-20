@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:gwentboard/bloc/battle_side/battle_side_bloc.dart';
+import 'package:gwentboard/utils/board_sizer.dart';
 
 class BattleSideScore extends StatelessWidget {
   const BattleSideScore({Key? key}) : super(key: key);
@@ -11,7 +13,9 @@ class BattleSideScore extends StatelessWidget {
       builder: (context, state) {
         return Text(
           state.score.toString(),
-          style: Theme.of(context).textTheme.headline5,
+          style: Theme.of(context).textTheme.headline5!.copyWith(
+                fontSize: context.read<BoardSizer>().scoreFontSize,
+              ),
         );
       },
     );

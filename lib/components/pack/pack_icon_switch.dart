@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:gwentboard/bloc/pack/pack_bloc.dart';
 import 'package:gwentboard/components/_control/toggle_icon.dart';
 import 'package:gwentboard/constants/gwent_icons.dart';
+import 'package:gwentboard/utils/board_sizer.dart';
 
 abstract class PackIconSwitch extends StatelessWidget {
   final IconData iconData;
@@ -16,11 +18,17 @@ abstract class PackIconSwitch extends StatelessWidget {
     return BlocBuilder<PackBloc, PackState>(
       builder: (context, state) {
         final bool isOn = _getIsOn(state);
-        return ToggleIcon(
-          isOn: isOn,
-          iconData: iconData,
-          iconSize: 28,
-          onTap: () => _onTap(context),
+        return Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: context.read<BoardSizer>().controlIconPaddingHorizontal,
+            vertical: context.read<BoardSizer>().controlIconPaddingVertical,
+          ),
+          child: ToggleIcon(
+            isOn: isOn,
+            iconData: iconData,
+            iconSize: context.read<BoardSizer>().controlIconSize,
+            onTap: () => _onTap(context),
+          ),
         );
       },
     );
@@ -31,88 +39,102 @@ abstract class PackIconSwitch extends StatelessWidget {
   void _onTap(BuildContext context);
 }
 
-class MoralIconSwitch extends PackIconSwitch {
-  MoralIconSwitch({Key? key})
-      : super(
+class HornIconSwitch extends PackIconSwitch {
+  HornIconSwitch({
+    Key? key,
+    double? iconSize,
+  }) : super(
           key: key,
           iconData: GwentIcons.commanderHorn,
         );
 
   @override
   bool _getIsOn(PackState state) {
-    return state.moralCard;
+    return state.attHorn;
   }
 
   @override
   void _onTap(BuildContext context) {
-    BlocProvider.of<PackBloc>(context).add(TogglePackMorale());
+    BlocProvider.of<PackBloc>(context).add(TogglePackHorn());
   }
 }
 
 class GroupIconSwitch extends PackIconSwitch {
-  GroupIconSwitch({Key? key}) : super(key: key, iconData: GwentIcons.muster);
+  GroupIconSwitch({
+    Key? key,
+    double? iconSize,
+  }) : super(
+          key: key,
+          iconData: GwentIcons.muster,
+        );
 
   @override
   bool _getIsOn(PackState state) {
-    return state.groupCard;
+    return state.attMuster;
   }
 
   @override
   void _onTap(BuildContext context) {
-    BlocProvider.of<PackBloc>(context).add(TogglePackGroup());
+    BlocProvider.of<PackBloc>(context).add(TogglePackMuster());
   }
 }
 
 class BrotherIconSwitch extends PackIconSwitch {
-  BrotherIconSwitch({Key? key})
-      : super(
+  BrotherIconSwitch({
+    Key? key,
+    double? iconSize,
+  }) : super(
           key: key,
           iconData: GwentIcons.tightBond,
         );
 
   @override
   bool _getIsOn(PackState state) {
-    return state.brotherCard;
+    return state.attTightBond;
   }
 
   @override
   void _onTap(BuildContext context) {
-    BlocProvider.of<PackBloc>(context).add(TogglePackBrother());
+    BlocProvider.of<PackBloc>(context).add(TogglePackTightBond());
   }
 }
 
 class SupportIconSwitch extends PackIconSwitch {
-  SupportIconSwitch({Key? key})
-      : super(
+  SupportIconSwitch({
+    Key? key,
+    double? iconSize,
+  }) : super(
           key: key,
           iconData: GwentIcons.moral,
         );
 
   @override
   bool _getIsOn(PackState state) {
-    return state.supportCard;
+    return state.attMoral;
   }
 
   @override
   void _onTap(BuildContext context) {
-    BlocProvider.of<PackBloc>(context).add(TogglePackSupport());
+    BlocProvider.of<PackBloc>(context).add(TogglePackMoral());
   }
 }
 
 class DoubleSupportIconSwitch extends PackIconSwitch {
-  DoubleSupportIconSwitch({Key? key})
-      : super(
+  DoubleSupportIconSwitch({
+    Key? key,
+    double? iconSize,
+  }) : super(
           key: key,
           iconData: GwentIcons.doubleMoral,
         );
 
   @override
   bool _getIsOn(PackState state) {
-    return state.doubleSupportCard;
+    return state.attDoubleMoral;
   }
 
   @override
   void _onTap(BuildContext context) {
-    BlocProvider.of<PackBloc>(context).add(TogglePackDoubleSupport());
+    BlocProvider.of<PackBloc>(context).add(TogglePackDoubleMoral());
   }
 }

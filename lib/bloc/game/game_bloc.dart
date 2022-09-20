@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:gwentboard/bloc/battle_side/battle_side_bloc.dart';
 import 'package:gwentboard/bloc/pack/pack_bloc.dart';
 

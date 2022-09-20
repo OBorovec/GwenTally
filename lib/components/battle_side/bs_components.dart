@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:gwentboard/components/game/cards.dart';
+import 'package:provider/provider.dart';
+
 import 'package:gwentboard/constants/colors.dart';
-import 'package:gwentboard/constants/dimensions.dart';
 import 'package:gwentboard/model/card_data.dart';
+import 'package:gwentboard/utils/board_sizer.dart';
+import 'package:gwentboard/components/game/cards.dart';
 
 class CardLine extends StatelessWidget {
   final List<CardData> cards;
@@ -19,7 +21,7 @@ class CardLine extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       constraints: BoxConstraints(
-        minHeight: BoardDims.cardHeight + 2 * BoardDims.cardPadding,
+        minHeight: context.read<BoardSizer>().cardViewHeight,
       ),
       decoration: BoxDecoration(
         color: BoardColors.cardLineBackground,
@@ -41,6 +43,7 @@ class CardLine extends StatelessWidget {
                         onDoubleTap: () => onRemove(
                           data,
                         ),
+                        sizer: context.read<BoardSizer>(),
                       ),
                     )
                     .toList(),
@@ -56,10 +59,12 @@ class CardLine extends StatelessWidget {
 
 class MoralIconSwitch extends StatelessWidget {
   final bool isOn;
+  final double? iconSize;
   final Function() onToggle;
   const MoralIconSwitch({
     Key? key,
     required this.isOn,
+    this.iconSize,
     required this.onToggle,
   }) : super(key: key);
 
@@ -67,15 +72,12 @@ class MoralIconSwitch extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onToggle,
-      child: SizedBox(
-        height: 50,
-        width: 30,
-        child: Icon(
-          Icons.bookmark,
-          color: isOn
-              ? Theme.of(context).colorScheme.secondary
-              : Theme.of(context).colorScheme.onSecondary,
-        ),
+      child: Icon(
+        Icons.bookmark,
+        size: iconSize,
+        color: isOn
+            ? Theme.of(context).colorScheme.secondary
+            : Theme.of(context).colorScheme.onSecondary,
       ),
     );
   }

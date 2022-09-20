@@ -7,12 +7,12 @@ abstract class PackEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class TogglePackMorale extends PackEvent {}
+class TogglePackHorn extends PackEvent {}
 
-class TogglePackGroup extends PackEvent {}
+class TogglePackMuster extends PackEvent {}
 
-class TogglePackBrother extends PackEvent {}
+class TogglePackTightBond extends PackEvent {}
 
-class TogglePackSupport extends PackEvent {}
+class TogglePackMoral extends PackEvent {}
 
-class TogglePackDoubleSupport extends PackEvent {}
+class TogglePackDoubleMoral extends PackEvent {}

@@ -28,8 +28,8 @@ class _PopFltBtnPageState extends State<PopFltBtnPage> {
               if (value) Navigator.of(context).pop();
             });
           },
-          child: const Icon(Icons.cancel),
           heroTag: 'menu_tag',
+          child: const Icon(Icons.cancel),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
       ),

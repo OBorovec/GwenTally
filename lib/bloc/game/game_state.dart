@@ -7,6 +7,7 @@ class GameState extends Equatable {
   final bool isFog;
   final bool isRain;
   final int highestCardScore;
+  final bool isTurnA;
 
   const GameState({
     this.scoreA = 0,
@@ -15,6 +16,7 @@ class GameState extends Equatable {
     this.isFog = false,
     this.isRain = false,
     this.highestCardScore = 0,
+    this.isTurnA = true,
   });
 
   @override
@@ -25,6 +27,7 @@ class GameState extends Equatable {
         isFog,
         isRain,
         highestCardScore,
+        isTurnA,
       ];
 
   GameState copyWith({
@@ -34,6 +37,7 @@ class GameState extends Equatable {
     bool? isFog,
     bool? isRain,
     int? highestCardScore,
+    bool? isTurnA,
   }) {
     return GameState(
       scoreA: scoreA ?? this.scoreA,
@@ -42,6 +46,7 @@ class GameState extends Equatable {
       isFog: isFog ?? this.isFog,
       isRain: isRain ?? this.isRain,
       highestCardScore: highestCardScore ?? this.highestCardScore,
+      isTurnA: isTurnA ?? this.isTurnA,
     );
   }
 }

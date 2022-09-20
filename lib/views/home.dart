@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+
+import 'package:gwentboard/route_generator.dart';
 import 'package:gwentboard/components/_page/root_page.dart';
 import 'package:gwentboard/components/expandable_fab.dart';
-import 'package:gwentboard/route_generator.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -65,13 +66,13 @@ class AppBoardOption extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
+        color: background,
         child: Center(
           child: Text(
             label,
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.headline5!,
           ),
         ),
-        color: background,
       ),
     );
   }

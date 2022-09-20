@@ -26,47 +26,47 @@ const defaultGoldCards = <CardData>[
 class PackState extends Equatable {
   final List<CardData> normalCards;
   final List<CardData> goldCards;
-  final bool moralCard;
-  final bool groupCard;
-  final bool brotherCard;
-  final bool supportCard;
-  final bool doubleSupportCard;
+  final bool attHorn;
+  final bool attMuster;
+  final bool attTightBond;
+  final bool attMoral;
+  final bool attDoubleMoral;
   const PackState({
     this.normalCards = defaultNormalCards,
     this.goldCards = defaultGoldCards,
-    this.moralCard = false,
-    this.groupCard = false,
-    this.brotherCard = false,
-    this.supportCard = false,
-    this.doubleSupportCard = false,
+    this.attHorn = false,
+    this.attMuster = false,
+    this.attTightBond = false,
+    this.attMoral = false,
+    this.attDoubleMoral = false,
   });
 
   @override
   List<Object> get props => [
-        moralCard,
-        groupCard,
-        brotherCard,
-        supportCard,
-        doubleSupportCard,
+        attHorn,
+        attMuster,
+        attTightBond,
+        attMoral,
+        attDoubleMoral,
       ];
 
   PackState copyWith({
     List<CardData>? normalCards,
     List<CardData>? goldCards,
-    bool? moralCard,
-    bool? groupCard,
-    bool? brotherCard,
-    bool? supportCard,
-    bool? doubleSupportCard,
+    bool? attHorn,
+    bool? attMuster,
+    bool? attTightBond,
+    bool? attMoral,
+    bool? attDoubleMoral,
   }) {
     return PackState(
       normalCards: normalCards ?? this.normalCards,
       goldCards: goldCards ?? this.goldCards,
-      moralCard: moralCard ?? this.moralCard,
-      groupCard: groupCard ?? this.groupCard,
-      brotherCard: brotherCard ?? this.brotherCard,
-      supportCard: supportCard ?? this.supportCard,
-      doubleSupportCard: doubleSupportCard ?? this.doubleSupportCard,
+      attHorn: attHorn ?? this.attHorn,
+      attMuster: attMuster ?? this.attMuster,
+      attTightBond: attTightBond ?? this.attTightBond,
+      attMoral: attMoral ?? this.attMoral,
+      attDoubleMoral: attDoubleMoral ?? this.attDoubleMoral,
     );
   }
 }

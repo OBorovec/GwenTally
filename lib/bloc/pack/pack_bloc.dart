@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:gwentboard/model/card_data.dart';
 
 part 'pack_event.dart';
@@ -9,78 +10,78 @@ part 'pack_state.dart';
 
 class PackBloc extends Bloc<PackEvent, PackState> {
   PackBloc() : super(const PackState()) {
-    on<TogglePackMorale>(_togglePackMorale);
-    on<TogglePackGroup>(_togglePackGroup);
-    on<TogglePackBrother>(_togglePackBrother);
-    on<TogglePackSupport>(_togglePackSupport);
-    on<TogglePackDoubleSupport>(_togglePackDoubleSupport);
+    on<TogglePackHorn>(_togglePackHorn);
+    on<TogglePackMuster>(_togglePackMuster);
+    on<TogglePackTightBond>(_togglePackTightBond);
+    on<TogglePackMoral>(_togglePackMoral);
+    on<TogglePackDoubleMoral>(_togglePackDoubleSupport);
   }
 
-  FutureOr<void> _togglePackMorale(
-    TogglePackMorale event,
+  FutureOr<void> _togglePackHorn(
+    TogglePackHorn event,
     Emitter<PackState> emit,
   ) {
     emit(
       PackState(
         normalCards: defaultNormalCards
-            .map((CardData data) => data.copyWith(attMoral: !state.moralCard))
+            .map((CardData data) => data.copyWith(attMoral: !state.attHorn))
             .toList(),
-        moralCard: !state.moralCard,
+        attHorn: !state.attHorn,
       ),
     );
   }
 
-  FutureOr<void> _togglePackGroup(
-    TogglePackGroup event,
+  FutureOr<void> _togglePackMuster(
+    TogglePackMuster event,
     Emitter<PackState> emit,
   ) {
     emit(
       PackState(
         normalCards: defaultNormalCards
-            .map((CardData data) => data.copyWith(attGroup: !state.groupCard))
+            .map((CardData data) => data.copyWith(attMuster: !state.attMuster))
             .toList(),
-        groupCard: !state.groupCard,
+        attMuster: !state.attMuster,
       ),
     );
   }
 
-  FutureOr<void> _togglePackBrother(
-    TogglePackBrother event,
+  FutureOr<void> _togglePackTightBond(
+    TogglePackTightBond event,
     Emitter<PackState> emit,
   ) {
     emit(
       PackState(
         normalCards: defaultNormalCards
             .map((CardData data) =>
-                data.copyWith(attBrothers: !state.brotherCard))
+                data.copyWith(attTightBond: !state.attTightBond))
             .toList(),
-        brotherCard: !state.brotherCard,
+        attTightBond: !state.attTightBond,
       ),
     );
   }
 
-  FutureOr<void> _togglePackSupport(
-    TogglePackSupport event,
+  FutureOr<void> _togglePackMoral(
+    TogglePackMoral event,
     Emitter<PackState> emit,
   ) {
     emit(PackState(
       normalCards: defaultNormalCards
-          .map((CardData data) => data.copyWith(attSupport: !state.supportCard))
+          .map((CardData data) => data.copyWith(attMoral: !state.attMoral))
           .toList(),
-      supportCard: !state.supportCard,
+      attMoral: !state.attMoral,
     ));
   }
 
   FutureOr<void> _togglePackDoubleSupport(
-    TogglePackDoubleSupport event,
+    TogglePackDoubleMoral event,
     Emitter<PackState> emit,
   ) {
     emit(PackState(
       normalCards: defaultNormalCards
           .map((CardData data) =>
-              data.copyWith(attDoubleSupport: !state.doubleSupportCard))
+              data.copyWith(attDoubleMoral: !state.attDoubleMoral))
           .toList(),
-      doubleSupportCard: !state.doubleSupportCard,
+      attDoubleMoral: !state.attDoubleMoral,
     ));
   }
 }

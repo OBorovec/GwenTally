@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:gwentboard/bloc/battle_side/battle_side_bloc.dart';
-import 'package:gwentboard/components/battle_side/bs_components.dart';
 import 'package:gwentboard/constants/gwent_icons.dart';
 import 'package:gwentboard/model/card_data.dart';
+import 'package:gwentboard/utils/board_sizer.dart';
+import 'package:gwentboard/components/battle_side/bs_components.dart';
 
 abstract class BattleLine extends StatelessWidget {
   final String title;
   final bool isMoral;
+  final int lineValue;
   final BattleSideEvent moralToggleEvent;
   final List<CardData> cards;
   final Function(CardData data) onAddCardEvent;
@@ -18,6 +21,7 @@ abstract class BattleLine extends StatelessWidget {
     Key? key,
     required this.title,
     required this.isMoral,
+    required this.lineValue,
     required this.moralToggleEvent,
     required this.cards,
     required this.onAddCardEvent,
@@ -30,15 +34,27 @@ abstract class BattleLine extends StatelessWidget {
     return Stack(
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 24.0),
+          padding: EdgeInsets.only(
+            top: context.read<BoardSizer>().lineTopPadding,
+          ),
           child: Row(
             children: [
-              MoralIconSwitch(
-                isOn: isMoral,
-                onToggle: () {
-                  BlocProvider.of<BattleSideBloc>(context)
-                      .add(moralToggleEvent);
-                },
+              Column(
+                children: [
+                  Text(
+                    lineValue.toString(),
+                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                        fontSize: context.read<BoardSizer>().lineScoreFontSize),
+                  ),
+                  MoralIconSwitch(
+                    isOn: isMoral,
+                    iconSize: context.read<BoardSizer>().controlIconSize,
+                    onToggle: () {
+                      BlocProvider.of<BattleSideBloc>(context)
+                          .add(moralToggleEvent);
+                    },
+                  ),
+                ],
               ),
               Expanded(
                 child: CardLine(
@@ -54,19 +70,29 @@ abstract class BattleLine extends StatelessWidget {
             ],
           ),
         ),
-        Positioned.fill(
+        Padding(
+          padding: EdgeInsets.only(
+            top: context.read<BoardSizer>().lineTitleTopOffset,
+          ),
           child: Align(
             alignment: Alignment.topCenter,
-            child: Text(title),
+            child: Text(
+              title,
+              style: Theme.of(context).textTheme.headline6!.copyWith(
+                    fontSize: context.read<BoardSizer>().lineTitleFontSize,
+                  ),
+            ),
           ),
         ),
         Positioned(
-            child: Icon(
-              weatherIcon,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            top: 0,
-            right: 0),
+          top: 0,
+          right: 0,
+          child: Icon(
+            weatherIcon,
+            size: context.read<BoardSizer>().lineWeatherIconSize,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+        ),
       ],
     );
   }
@@ -80,6 +106,9 @@ class FrontLine extends BattleLine {
           key: key,
           title: 'Front line',
           isMoral: battleSideState.frontlineMorale,
+          lineValue: battleSideState.frontlineCards
+              .map((CardData cd) => cd.activeValue ?? cd.baseValue)
+              .fold(0, (a, b) => a + b),
           moralToggleEvent: ToggleFrontlineMorale(),
           cards: battleSideState.frontlineCards,
           onAddCardEvent: (CardData cd) => AddFrontlineCard(data: cd),
@@ -98,6 +127,9 @@ class BackLine extends BattleLine {
           key: key,
           title: 'Back line',
           isMoral: battleSideState.backlineMorale,
+          lineValue: battleSideState.backlineCards
+              .map((CardData cd) => cd.activeValue ?? cd.baseValue)
+              .fold(0, (a, b) => a + b),
           moralToggleEvent: ToggleBacklineMorale(),
           cards: battleSideState.backlineCards,
           onAddCardEvent: (CardData cd) => AddBacklineCard(data: cd),
@@ -116,6 +148,9 @@ class ArtyLine extends BattleLine {
           key: key,
           title: 'Arty line',
           isMoral: battleSideState.artylineMorale,
+          lineValue: battleSideState.artylineCards
+              .map((CardData cd) => cd.activeValue ?? cd.baseValue)
+              .fold(0, (a, b) => a + b),
           moralToggleEvent: ToggleArtylineMorale(),
           cards: battleSideState.artylineCards,
           onAddCardEvent: (CardData cd) => AddArtylineCard(data: cd),

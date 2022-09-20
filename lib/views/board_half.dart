@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
+
 import 'package:gwentboard/bloc/battle_side/battle_side_bloc.dart';
 import 'package:gwentboard/bloc/game/game_bloc.dart';
 import 'package:gwentboard/bloc/pack/pack_bloc.dart';
@@ -8,7 +10,9 @@ import 'package:gwentboard/components/battle_side/bs_score.dart';
 import 'package:gwentboard/components/battle_side/bs_widget.dart';
 import 'package:gwentboard/components/game/game_control_state.dart';
 import 'package:gwentboard/components/game/game_control_weather.dart';
-import 'package:gwentboard/components/pack/pack_widget.dart';
+import 'package:gwentboard/components/pack/pack_control.dart';
+import 'package:gwentboard/components/pack/pack_wrap.dart';
+import 'package:gwentboard/utils/board_sizer.dart';
 
 class SingleBoardPage extends StatelessWidget {
   const SingleBoardPage({Key? key}) : super(key: key);
@@ -24,53 +28,66 @@ class SingleBoardPage extends StatelessWidget {
       battleSideBlocB: battleSideBlocB,
       packBloc: packBloc,
     );
-    return PopDialogPage(
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: BlocProvider(
-          create: (context) => gameBloc,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              BlocProvider(
-                create: (context) => packBloc,
-                child: const CardPack(),
-              ),
-              IntrinsicHeight(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    const Expanded(child: GameWeatherControl()),
-                    const VerticalDivider(),
-                    const GameControl(),
-                    const VerticalDivider(),
-                    IconButton(
-                      onPressed: () => Navigator.maybePop(context, false),
-                      icon: const Icon(Icons.cancel),
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    return Provider(
+      create: (_) => BoardSizer.calcBoardSizer(width: width, height: height),
+      child: Builder(builder: (context) {
+        return PopDialogPage(
+          body: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: BlocProvider(
+              create: (context) => gameBloc,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  BlocProvider(
+                    create: (context) => packBloc,
+                    child: Column(
+                      children: const [
+                        PackControlRow(),
+                        SizedBox(height: 16),
+                        CardPackWrap(),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              BlocProvider(
-                create: (context) => battleSideBlocA,
-                child: Column(
-                  children: const [
-                    BattleSide(),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
-                      child: Divider(),
+                  ),
+                  SizedBox(
+                    height: context.read<BoardSizer>().controlLineHeight,
+                    width: context.read<BoardSizer>().controlLineWidth,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: const [
+                        FrostWeatherSwitch(),
+                        FogWeatherSwitch(),
+                        RainWeatherSwitch(),
+                        VerticalDivider(),
+                        ScorchButton(),
+                        ResetButton(),
+                        VerticalDivider(),
+                        ExitButton(),
+                      ],
                     ),
-                    BattleSideScore(),
-                  ],
-                ),
+                  ),
+                  BlocProvider(
+                    create: (context) => battleSideBlocA,
+                    child: Column(
+                      children: const [
+                        BattleSide(),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 16.0),
+                          child: Divider(),
+                        ),
+                        BattleSideScore(),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gwentboard/constants/app_theme.dart';
-import 'package:gwentboard/route_generator.dart';
 import 'package:wakelock/wakelock.dart';
+
+import 'package:gwentboard/route_generator.dart';
+import 'package:gwentboard/constants/app_theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,13 +16,13 @@ class AppBlocObserver extends BlocObserver {
   @override
   void onChange(BlocBase bloc, Change change) {
     super.onChange(bloc, change);
-    // print(change);
+    if (bloc is Cubit) debugPrint(change.toString());
   }
 
   @override
   void onTransition(Bloc bloc, Transition transition) {
     super.onTransition(bloc, transition);
-    // print(transition);
+    debugPrint(transition.toString());
   }
 }
 

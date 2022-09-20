@@ -148,8 +148,8 @@ class _ExpandableFabState extends State<ExpandableFab>
           directionInDegrees: angleInDegrees,
           maxDistance: widget.distance,
           progress: _expandAnimation,
-          child: widget.children[i],
           alignmentOffset: offsetRoot,
+          child: widget.children[i],
         ),
       );
     }
@@ -174,8 +174,8 @@ class _ExpandableFabState extends State<ExpandableFab>
           duration: const Duration(milliseconds: 250),
           child: FloatingActionButton(
             onPressed: _toggle,
-            child: widget.child,
             heroTag: widget.heroTag,
+            child: widget.child,
           ),
         ),
       ),

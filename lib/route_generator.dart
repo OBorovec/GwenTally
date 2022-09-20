@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:gwentboard/views/board_full.dart';
+import 'package:gwentboard/views/board_half.dart';
 import 'package:gwentboard/views/capture.dart';
 import 'package:gwentboard/views/home.dart';
 import 'package:gwentboard/views/info.dart';
 import 'package:gwentboard/views/packs.dart';
 import 'package:gwentboard/views/settings.dart';
-import 'package:gwentboard/views/board_half.dart';
 
 class RoutePaths {
   static const String home = '/';
