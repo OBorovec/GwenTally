@@ -94,27 +94,30 @@ class IconDescription extends StatelessWidget {
           ),
         ),
         _buildItem(
-          Icon(GwentIcons.commanderHorn),
+          const ImageIcon(
+            GwentIcons.commanderHorn,
+            color: Colors.white,
+          ),
           'Commander horn',
         ),
         _buildItem(
-          Icon(GwentIcons.tightBond),
+          const Icon(GwentIcons.tightBond),
           'Tight bond',
         ),
         _buildItem(
-          Icon(GwentIcons.muster),
+          const Icon(GwentIcons.muster),
           'Muster',
         ),
         _buildItem(
-          Icon(GwentIcons.moral),
+          const Icon(GwentIcons.moral),
           'Moral',
         ),
         _buildItem(
-          Icon(GwentIcons.doubleMoral),
+          const Icon(GwentIcons.doubleMoral),
           'Double moral',
         ),
         _buildItem(
-          ImageIcon(
+          const ImageIcon(
             GwentIcons.scorch,
             color: Colors.white,
           ),

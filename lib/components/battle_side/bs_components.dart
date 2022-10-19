@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:gwentboard/constants/gwent_icons.dart';
 import 'package:gwentboard/constants/colors.dart';
 import 'package:gwentboard/model/card_data.dart';
 import 'package:gwentboard/utils/board_sizer.dart';
@@ -57,11 +58,11 @@ class CardLine extends StatelessWidget {
   }
 }
 
-class MoralIconSwitch extends StatelessWidget {
+class CommanderHornSwitch extends StatelessWidget {
   final bool isOn;
   final double? iconSize;
   final Function() onToggle;
-  const MoralIconSwitch({
+  const CommanderHornSwitch({
     Key? key,
     required this.isOn,
     this.iconSize,
@@ -70,14 +71,61 @@ class MoralIconSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onToggle,
-      child: Icon(
-        Icons.bookmark,
-        size: iconSize,
-        color: isOn
-            ? Theme.of(context).colorScheme.secondary
-            : Theme.of(context).colorScheme.onSecondary,
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: context.read<BoardSizer>().controlIconPaddingHorizontal,
+        vertical: context.read<BoardSizer>().controlIconPaddingVertical,
+      ),
+      child: InkWell(
+        onTap: onToggle,
+        child: ImageIcon(
+          GwentIcons.commanderHorn,
+          size: context.read<BoardSizer>().controlIconSize,
+          color: isOn
+              ? Theme.of(context).colorScheme.secondary
+              : Theme.of(context).colorScheme.onSecondary,
+        ),
+        // child: Icon(
+        //   Icons.bookmark,
+        //   size: context.read<BoardSizer>().controlIconSize,
+        //   color: isOn
+        //       ? Theme.of(context).colorScheme.secondary
+        //       : Theme.of(context).colorScheme.onSecondary,
+        // ),
+      ),
+    );
+  }
+}
+
+class CommanderSwitch extends StatelessWidget {
+  final bool isOn;
+  final double? iconSize;
+  final Function() onToggle;
+  const CommanderSwitch({
+    Key? key,
+    required this.isOn,
+    this.iconSize,
+    required this.onToggle,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColorDark.withAlpha(100),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(5.0),
+        ),
+      ),
+      child: InkWell(
+        onTap: onToggle,
+        child: ImageIcon(
+          GwentIcons.crown,
+          size: context.read<BoardSizer>().controlIconSize,
+          color: isOn
+              ? Theme.of(context).colorScheme.secondary
+              : Theme.of(context).colorScheme.onSecondary,
+        ),
       ),
     );
   }

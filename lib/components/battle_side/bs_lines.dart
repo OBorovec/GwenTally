@@ -8,6 +8,7 @@ import 'package:gwentboard/utils/board_sizer.dart';
 import 'package:gwentboard/components/battle_side/bs_components.dart';
 
 abstract class BattleLine extends StatelessWidget {
+  final bool collapsed;
   final String title;
   final bool isMoral;
   final int lineValue;
@@ -16,9 +17,11 @@ abstract class BattleLine extends StatelessWidget {
   final Function(CardData data) onAddCardEvent;
   final Function(CardData data) onRemoveCardEvent;
   final IconData weatherIcon;
+  final bool? commanderIcon;
 
   const BattleLine({
     Key? key,
+    required this.collapsed,
     required this.title,
     required this.isMoral,
     required this.lineValue,
@@ -27,6 +30,7 @@ abstract class BattleLine extends StatelessWidget {
     required this.onAddCardEvent,
     required this.onRemoveCardEvent,
     required this.weatherIcon,
+    this.commanderIcon,
   }) : super(key: key);
 
   @override
@@ -46,14 +50,15 @@ abstract class BattleLine extends StatelessWidget {
                     style: Theme.of(context).textTheme.headline6!.copyWith(
                         fontSize: context.read<BoardSizer>().lineScoreFontSize),
                   ),
-                  MoralIconSwitch(
-                    isOn: isMoral,
-                    iconSize: context.read<BoardSizer>().controlIconSize,
-                    onToggle: () {
-                      BlocProvider.of<BattleSideBloc>(context)
-                          .add(moralToggleEvent);
-                    },
-                  ),
+                  if (!collapsed)
+                    CommanderHornSwitch(
+                      isOn: isMoral,
+                      iconSize: context.read<BoardSizer>().controlIconSize,
+                      onToggle: () {
+                        BlocProvider.of<BattleSideBloc>(context)
+                            .add(moralToggleEvent);
+                      },
+                    ),
                 ],
               ),
               Expanded(
@@ -93,6 +98,17 @@ abstract class BattleLine extends StatelessWidget {
             color: Theme.of(context).colorScheme.secondary,
           ),
         ),
+        if (commanderIcon != null)
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: CommanderSwitch(
+              isOn: commanderIcon!,
+              iconSize: context.read<BoardSizer>().lineWeatherIconSize,
+              onToggle: () => BlocProvider.of<BattleSideBloc>(context)
+                  .add(const ToggleCommanderCard()),
+            ),
+          ),
       ],
     );
   }
@@ -101,36 +117,41 @@ abstract class BattleLine extends StatelessWidget {
 class FrontLine extends BattleLine {
   FrontLine({
     Key? key,
+    required bool collapsed,
     required BattleSideState battleSideState,
   }) : super(
           key: key,
+          collapsed: collapsed,
           title: 'Front line',
           isMoral: battleSideState.frontlineMorale,
           lineValue: battleSideState.frontlineCards
               .map((CardData cd) => cd.activeValue ?? cd.baseValue)
               .fold(0, (a, b) => a + b),
-          moralToggleEvent: ToggleFrontlineMorale(),
+          moralToggleEvent: const ToggleFrontlineMorale(),
           cards: battleSideState.frontlineCards,
           onAddCardEvent: (CardData cd) => AddFrontlineCard(data: cd),
           onRemoveCardEvent: (CardData cd) => RemoveFrontlineCard(data: cd),
           weatherIcon: battleSideState.frontlineWeather
               ? GwentIcons.snow
               : GwentIcons.sunny,
+          commanderIcon: battleSideState.commanderPlayed,
         );
 }
 
 class BackLine extends BattleLine {
   BackLine({
     Key? key,
+    required bool collapsed,
     required BattleSideState battleSideState,
   }) : super(
           key: key,
+          collapsed: collapsed,
           title: 'Back line',
           isMoral: battleSideState.backlineMorale,
           lineValue: battleSideState.backlineCards
               .map((CardData cd) => cd.activeValue ?? cd.baseValue)
               .fold(0, (a, b) => a + b),
-          moralToggleEvent: ToggleBacklineMorale(),
+          moralToggleEvent: const ToggleBacklineMorale(),
           cards: battleSideState.backlineCards,
           onAddCardEvent: (CardData cd) => AddBacklineCard(data: cd),
           onRemoveCardEvent: (CardData cd) => RemoveBacklineCard(data: cd),
@@ -143,15 +164,17 @@ class BackLine extends BattleLine {
 class ArtyLine extends BattleLine {
   ArtyLine({
     Key? key,
+    required bool collapsed,
     required BattleSideState battleSideState,
   }) : super(
           key: key,
+          collapsed: collapsed,
           title: 'Arty line',
           isMoral: battleSideState.artylineMorale,
           lineValue: battleSideState.artylineCards
               .map((CardData cd) => cd.activeValue ?? cd.baseValue)
               .fold(0, (a, b) => a + b),
-          moralToggleEvent: ToggleArtylineMorale(),
+          moralToggleEvent: const ToggleArtylineMorale(),
           cards: battleSideState.artylineCards,
           onAddCardEvent: (CardData cd) => AddArtylineCard(data: cd),
           onRemoveCardEvent: (CardData cd) => RemoveArtylineCard(data: cd),

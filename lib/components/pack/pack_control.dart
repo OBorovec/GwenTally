@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:provider/provider.dart';
-
-import 'package:gwentboard/utils/board_sizer.dart';
 import 'package:gwentboard/components/pack/pack_icon_switch.dart';
 
 class PackControl extends StatelessWidget {
@@ -12,19 +9,11 @@ class PackControl extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        BrotherIconSwitch(
-          iconSize: context.read<BoardSizer>().controlIconSize,
-        ),
-        HornIconSwitch(
-          iconSize: context.read<BoardSizer>().controlIconSize,
-        ),
-        SupportIconSwitch(
-          iconSize: context.read<BoardSizer>().controlIconSize,
-        ),
-        DoubleSupportIconSwitch(
-          iconSize: context.read<BoardSizer>().controlIconSize,
-        ),
+      children: const [
+        TightBondIconSwitch(),
+        HornIconSwitch(),
+        MoralIconSwitch(),
+        DoubleMoralIconSwitch(),
       ],
     );
   }
@@ -37,19 +26,11 @@ class PackControlRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        BrotherIconSwitch(
-          iconSize: context.read<BoardSizer>().controlIconSize,
-        ),
-        HornIconSwitch(
-          iconSize: context.read<BoardSizer>().controlIconSize,
-        ),
-        SupportIconSwitch(
-          iconSize: context.read<BoardSizer>().controlIconSize,
-        ),
-        DoubleSupportIconSwitch(
-          iconSize: context.read<BoardSizer>().controlIconSize,
-        ),
+      children: const [
+        TightBondIconSwitch(),
+        HornIconSwitch(),
+        MoralIconSwitch(),
+        DoubleMoralIconSwitch(),
       ],
     );
   }

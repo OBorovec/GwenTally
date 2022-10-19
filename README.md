@@ -1,14 +1,24 @@
 # Gwent Board
 
-Love playing classical Gwent but find it hard to keep track of the score? This is the app for you!
+<table style="max-width:800px;">
+    <tr>
+        <td><img alt="Gwent board icon" src="assets/icon.png" width="200"></td>
+        <td>
+            Love playing classical Gwent but find it hard to keep track of the score? This is the app for you!
+            <table>
+                <tr>
+                    <a href="https://play.google.com/store/apps/details?id=cz.oborovec.gwentboard">
+                        <td><img alt="Get it on Google Play" src="docs/imgs/google_play.svg" height="80"/></td>
+                    </a>
+                    <a href="https://apps.apple.com/us/app/blappka/id1642561156">
+                        <td><img alt="Get it on Apple Store" src="docs/imgs/app_store.svg" height="80"/></td>
+                    </a>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
 
-## Resources
+## Screenshots
 
-### Icons
-
-- [cards](https://www.flaticon.com/premium-icon/cards_867505)
-- [sword](https://www.flaticon.com/free-icon/sword_842184)
-- [bow](https://www.flaticon.com/free-icon/bow_811994)
-- [catapult](https://www.flaticon.com/premium-icon/catapult_2350625)
-- [scull](https://icon-library.com/icon/scull-icon-20.html)
-- [horn](https://www.flaticon.com/premium-icon/horn_2222887?related_id=2222887&origin=search)
+## Release Notes

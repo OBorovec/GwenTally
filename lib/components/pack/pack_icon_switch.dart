@@ -39,30 +39,58 @@ abstract class PackIconSwitch extends StatelessWidget {
   void _onTap(BuildContext context);
 }
 
-class HornIconSwitch extends PackIconSwitch {
-  HornIconSwitch({
-    Key? key,
-    double? iconSize,
-  }) : super(
-          key: key,
-          iconData: GwentIcons.commanderHorn,
+// class HornIconSwitch extends PackIconSwitch {
+//   HornIconSwitch({
+//     Key? key,
+//   }) : super(
+//           key: key,
+//           iconData: GwentIcons.commanderHorn,
+//         );
+
+//   @override
+//   bool _getIsOn(PackState state) {
+//     return state.attHorn;
+//   }
+
+//   @override
+//   void _onTap(BuildContext context) {
+//     BlocProvider.of<PackBloc>(context).add(TogglePackHorn());
+//   }
+// }
+
+class HornIconSwitch extends StatelessWidget {
+  const HornIconSwitch({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<PackBloc, PackState>(
+      builder: (context, state) {
+        final bool isOn = state.attHorn;
+        return Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: context.read<BoardSizer>().controlIconPaddingHorizontal,
+            vertical: context.read<BoardSizer>().controlIconPaddingVertical,
+          ),
+          child: InkWell(
+            onTap: () =>
+                BlocProvider.of<PackBloc>(context).add(TogglePackHorn()),
+            child: ImageIcon(
+              GwentIcons.commanderHorn,
+              size: context.read<BoardSizer>().controlIconSize,
+              color: isOn
+                  ? Theme.of(context).colorScheme.secondary
+                  : Theme.of(context).colorScheme.onSecondary,
+            ),
+          ),
         );
-
-  @override
-  bool _getIsOn(PackState state) {
-    return state.attHorn;
-  }
-
-  @override
-  void _onTap(BuildContext context) {
-    BlocProvider.of<PackBloc>(context).add(TogglePackHorn());
+      },
+    );
   }
 }
 
-class GroupIconSwitch extends PackIconSwitch {
-  GroupIconSwitch({
+class MusterIconSwitch extends PackIconSwitch {
+  const MusterIconSwitch({
     Key? key,
-    double? iconSize,
   }) : super(
           key: key,
           iconData: GwentIcons.muster,
@@ -79,10 +107,9 @@ class GroupIconSwitch extends PackIconSwitch {
   }
 }
 
-class BrotherIconSwitch extends PackIconSwitch {
-  BrotherIconSwitch({
+class TightBondIconSwitch extends PackIconSwitch {
+  const TightBondIconSwitch({
     Key? key,
-    double? iconSize,
   }) : super(
           key: key,
           iconData: GwentIcons.tightBond,
@@ -99,10 +126,9 @@ class BrotherIconSwitch extends PackIconSwitch {
   }
 }
 
-class SupportIconSwitch extends PackIconSwitch {
-  SupportIconSwitch({
+class MoralIconSwitch extends PackIconSwitch {
+  const MoralIconSwitch({
     Key? key,
-    double? iconSize,
   }) : super(
           key: key,
           iconData: GwentIcons.moral,
@@ -119,10 +145,9 @@ class SupportIconSwitch extends PackIconSwitch {
   }
 }
 
-class DoubleSupportIconSwitch extends PackIconSwitch {
-  DoubleSupportIconSwitch({
+class DoubleMoralIconSwitch extends PackIconSwitch {
+  const DoubleMoralIconSwitch({
     Key? key,
-    double? iconSize,
   }) : super(
           key: key,
           iconData: GwentIcons.doubleMoral,

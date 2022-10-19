@@ -7,9 +7,13 @@ abstract class BattleSideEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class EmptyBattleSide extends BattleSideEvent {}
+class EmptyBattleSide extends BattleSideEvent {
+  const EmptyBattleSide();
+}
 
-class CalculateScore extends BattleSideEvent {}
+class CalculateScore extends BattleSideEvent {
+  const CalculateScore();
+}
 
 class AddFrontlineCard extends BattleSideEvent {
   final CardData data;
@@ -59,11 +63,17 @@ class RemoveArtylineCard extends BattleSideEvent {
   });
 }
 
-class ToggleFrontlineWeather extends BattleSideEvent {}
+class ToggleFrontlineWeather extends BattleSideEvent {
+  const ToggleFrontlineWeather();
+}
 
-class ToggleBacklineWeather extends BattleSideEvent {}
+class ToggleBacklineWeather extends BattleSideEvent {
+  const ToggleBacklineWeather();
+}
 
-class ToggleArtylineWeather extends BattleSideEvent {}
+class ToggleArtylineWeather extends BattleSideEvent {
+  const ToggleArtylineWeather();
+}
 
 class SetFrontlineWeather extends BattleSideEvent {
   final bool value;
@@ -86,15 +96,25 @@ class SetArtylineWeather extends BattleSideEvent {
   });
 }
 
-class ToggleFrontlineMorale extends BattleSideEvent {}
+class ToggleFrontlineMorale extends BattleSideEvent {
+  const ToggleFrontlineMorale();
+}
 
-class ToggleBacklineMorale extends BattleSideEvent {}
+class ToggleBacklineMorale extends BattleSideEvent {
+  const ToggleBacklineMorale();
+}
 
-class ToggleArtylineMorale extends BattleSideEvent {}
+class ToggleArtylineMorale extends BattleSideEvent {
+  const ToggleArtylineMorale();
+}
 
 class DeleteCardsWithValue extends BattleSideEvent {
   final int value;
   const DeleteCardsWithValue({
     required this.value,
   });
+}
+
+class ToggleCommanderCard extends BattleSideEvent {
+  const ToggleCommanderCard();
 }

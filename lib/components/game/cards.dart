@@ -134,8 +134,14 @@ class BoardCard extends StatelessWidget {
   Widget _buildCardIcon(BuildContext context) {
     IconData? icon;
     if (data.attCommanderHorn) {
-      icon = GwentIcons.commanderHorn;
-    } else if (data.attTightBond) {
+      return ImageIcon(
+        GwentIcons.commanderHorn,
+        // size: context.read<BoardSizer>().controlIconSize,
+        size: sizer.cardIconSize,
+        color: Colors.white,
+      );
+    }
+    if (data.attTightBond) {
       icon = GwentIcons.tightBond;
     } else if (data.attMuster) {
       icon = GwentIcons.muster;

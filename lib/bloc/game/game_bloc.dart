@@ -47,8 +47,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     RestartGame event,
     Emitter<GameState> emit,
   ) {
-    battleSideBlocA.add(EmptyBattleSide());
-    battleSideBlocB.add(EmptyBattleSide());
+    battleSideBlocA.add(const EmptyBattleSide());
+    battleSideBlocB.add(const EmptyBattleSide());
     emit(const GameState());
   }
 

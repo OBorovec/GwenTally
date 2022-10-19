@@ -2,6 +2,8 @@ part of 'battle_side_bloc.dart';
 
 class BattleSideState extends Equatable {
   final int score;
+  final bool commanderPlayed;
+  final DateTime? lastPlayerAction;
   final List<CardData> frontlineCards;
   final List<CardData> backlineCards;
   final List<CardData> artylineCards;
@@ -14,6 +16,8 @@ class BattleSideState extends Equatable {
 
   const BattleSideState({
     this.score = 0,
+    this.commanderPlayed = false,
+    this.lastPlayerAction,
     this.frontlineCards = const <CardData>[],
     this.backlineCards = const <CardData>[],
     this.artylineCards = const <CardData>[],
@@ -28,6 +32,7 @@ class BattleSideState extends Equatable {
   @override
   List<Object?> get props => [
         score,
+        commanderPlayed,
         frontlineCards,
         backlineCards,
         artylineCards,
@@ -41,6 +46,8 @@ class BattleSideState extends Equatable {
 
   BattleSideState copyWith({
     int? score,
+    bool? commanderPlayed,
+    DateTime? lastPlayerAction,
     List<CardData>? frontlineCards,
     List<CardData>? backlineCards,
     List<CardData>? artylineCards,
@@ -53,6 +60,8 @@ class BattleSideState extends Equatable {
   }) {
     return BattleSideState(
       score: score ?? this.score,
+      commanderPlayed: commanderPlayed ?? this.commanderPlayed,
+      lastPlayerAction: lastPlayerAction ?? this.lastPlayerAction,
       frontlineCards: frontlineCards ?? this.frontlineCards,
       backlineCards: backlineCards ?? this.backlineCards,
       artylineCards: artylineCards ?? this.artylineCards,

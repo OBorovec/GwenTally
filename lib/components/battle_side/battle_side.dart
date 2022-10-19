@@ -4,9 +4,11 @@ import 'package:gwentboard/bloc/battle_side/battle_side_bloc.dart';
 import 'package:gwentboard/components/battle_side/bs_lines.dart';
 
 class BattleSide extends StatelessWidget {
+  final bool collapsed;
   final bool showReversed;
   const BattleSide({
     Key? key,
+    this.collapsed = true,
     this.showReversed = false,
   }) : super(key: key);
 
@@ -17,12 +19,15 @@ class BattleSide extends StatelessWidget {
         List<Widget> columnContent = [
           FrontLine(
             battleSideState: state,
+            collapsed: collapsed,
           ),
           BackLine(
             battleSideState: state,
+            collapsed: collapsed,
           ),
           ArtyLine(
             battleSideState: state,
+            collapsed: collapsed,
           ),
         ];
         if (showReversed) columnContent = columnContent.reversed.toList();

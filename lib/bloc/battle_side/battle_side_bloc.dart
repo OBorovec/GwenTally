@@ -29,6 +29,7 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
     on<ToggleBacklineMorale>(_toggleBacklineMorale);
     on<ToggleArtylineMorale>(_toggleArtylineMorale);
     on<DeleteCardsWithValue>(_deleteCardsWithValue);
+    on<ToggleCommanderCard>(_toggleCommanderCard);
   }
 
   FutureOr<void> _onEmptyBattleSide(
@@ -165,7 +166,7 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
         frontlineCards: frontlineCards,
       ),
     );
-    add(CalculateScore());
+    add(const CalculateScore());
   }
 
   FutureOr<void> _addBacklineCard(
@@ -180,7 +181,7 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
         backlineCards: backlineCards,
       ),
     );
-    add(CalculateScore());
+    add(const CalculateScore());
   }
 
   FutureOr<void> _addArtylineCard(
@@ -195,7 +196,7 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
         artylineCards: artylineCards,
       ),
     );
-    add(CalculateScore());
+    add(const CalculateScore());
   }
 
   FutureOr<void> _removeFrontlineCard(
@@ -209,7 +210,7 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
         frontlineCards: frontlineCards,
       ),
     );
-    add(CalculateScore());
+    add(const CalculateScore());
   }
 
   FutureOr<void> _removeBacklineCard(
@@ -223,7 +224,7 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
         backlineCards: backlineCards,
       ),
     );
-    add(CalculateScore());
+    add(const CalculateScore());
   }
 
   FutureOr<void> _removeArtylineCard(
@@ -237,7 +238,7 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
         artylineCards: artylineCards,
       ),
     );
-    add(CalculateScore());
+    add(const CalculateScore());
   }
 
   FutureOr<void> _toggleFrontlineWeather(
@@ -245,7 +246,7 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
     Emitter<BattleSideState> emit,
   ) {
     emit(state.copyWith(frontlineWeather: !state.frontlineWeather));
-    add(CalculateScore());
+    add(const CalculateScore());
   }
 
   FutureOr<void> _toggleBacklineWeather(
@@ -253,7 +254,7 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
     Emitter<BattleSideState> emit,
   ) {
     emit(state.copyWith(backlineWeather: !state.backlineWeather));
-    add(CalculateScore());
+    add(const CalculateScore());
   }
 
   FutureOr<void> _toggleArtylineWeather(
@@ -261,7 +262,7 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
     Emitter<BattleSideState> emit,
   ) {
     emit(state.copyWith(artylineWeather: !state.artylineWeather));
-    add(CalculateScore());
+    add(const CalculateScore());
   }
 
   FutureOr<void> _setFrontlineWeather(
@@ -269,7 +270,7 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
     Emitter<BattleSideState> emit,
   ) {
     emit(state.copyWith(frontlineWeather: event.value));
-    add(CalculateScore());
+    add(const CalculateScore());
   }
 
   FutureOr<void> _setBacklineWeather(
@@ -277,7 +278,7 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
     Emitter<BattleSideState> emit,
   ) {
     emit(state.copyWith(backlineWeather: event.value));
-    add(CalculateScore());
+    add(const CalculateScore());
   }
 
   FutureOr<void> _tsetArtylineWeather(
@@ -285,7 +286,7 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
     Emitter<BattleSideState> emit,
   ) {
     emit(state.copyWith(artylineWeather: event.value));
-    add(CalculateScore());
+    add(const CalculateScore());
   }
 
   FutureOr<void> _toggleFrontlineMorale(
@@ -293,7 +294,7 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
     Emitter<BattleSideState> emit,
   ) {
     emit(state.copyWith(frontlineMorale: !state.frontlineMorale));
-    add(CalculateScore());
+    add(const CalculateScore());
   }
 
   FutureOr<void> _toggleBacklineMorale(
@@ -301,7 +302,7 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
     Emitter<BattleSideState> emit,
   ) {
     emit(state.copyWith(backlineMorale: !state.backlineMorale));
-    add(CalculateScore());
+    add(const CalculateScore());
   }
 
   FutureOr<void> _toggleArtylineMorale(
@@ -309,7 +310,7 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
     Emitter<BattleSideState> emit,
   ) {
     emit(state.copyWith(artylineMorale: !state.artylineMorale));
-    add(CalculateScore());
+    add(const CalculateScore());
   }
 
   FutureOr<void> _deleteCardsWithValue(
@@ -332,6 +333,15 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
         artylineCards: artylineCards,
       ),
     );
-    add(CalculateScore());
+    add(const CalculateScore());
+  }
+
+  FutureOr<void> _toggleCommanderCard(
+    ToggleCommanderCard event,
+    Emitter<BattleSideState> emit,
+  ) {
+    emit(state.copyWith(
+      commanderPlayed: !state.commanderPlayed,
+    ));
   }
 }

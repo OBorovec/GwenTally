@@ -14,7 +14,7 @@ class PackBloc extends Bloc<PackEvent, PackState> {
     on<TogglePackMuster>(_togglePackMuster);
     on<TogglePackTightBond>(_togglePackTightBond);
     on<TogglePackMoral>(_togglePackMoral);
-    on<TogglePackDoubleMoral>(_togglePackDoubleSupport);
+    on<TogglePackDoubleMoral>(_togglePackDoubleMoral);
   }
 
   FutureOr<void> _togglePackHorn(
@@ -24,7 +24,8 @@ class PackBloc extends Bloc<PackEvent, PackState> {
     emit(
       PackState(
         normalCards: defaultNormalCards
-            .map((CardData data) => data.copyWith(attMoral: !state.attHorn))
+            .map((CardData data) =>
+                data.copyWith(attCommanderHorn: !state.attHorn))
             .toList(),
         attHorn: !state.attHorn,
       ),
@@ -72,7 +73,7 @@ class PackBloc extends Bloc<PackEvent, PackState> {
     ));
   }
 
-  FutureOr<void> _togglePackDoubleSupport(
+  FutureOr<void> _togglePackDoubleMoral(
     TogglePackDoubleMoral event,
     Emitter<PackState> emit,
   ) {

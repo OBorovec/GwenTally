@@ -4,7 +4,7 @@ import 'package:gwentboard/bloc/battle_side/battle_side_bloc.dart';
 import 'package:gwentboard/bloc/game/game_bloc.dart';
 import 'package:gwentboard/bloc/pack/pack_bloc.dart';
 import 'package:gwentboard/components/_page/pop_page.dart';
-import 'package:gwentboard/components/battle_side/bs_widget.dart';
+import 'package:gwentboard/components/battle_side/battle_side.dart';
 import 'package:gwentboard/components/game/game_control_state.dart';
 import 'package:gwentboard/components/game/game_score.dart';
 import 'package:gwentboard/components/game/game_control_weather.dart';
