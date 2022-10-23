@@ -9,7 +9,7 @@ import 'package:gwentboard/constants/app_theme.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = AppBlocObserver();
-  runApp(const MyApp());
+  runApp(const GwentBoardApp());
 }
 
 class AppBlocObserver extends BlocObserver {
@@ -26,8 +26,8 @@ class AppBlocObserver extends BlocObserver {
   }
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class GwentBoardApp extends StatelessWidget {
+  const GwentBoardApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Gwent Board',
       theme: appTheme,
-      initialRoute: '/',
+      initialRoute: RoutePaths.home,
       onGenerateRoute: (settings) => RouteGenerator.generateRoute(
         settings,
       ),

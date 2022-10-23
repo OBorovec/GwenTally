@@ -13,6 +13,7 @@ class BattleSideState extends Equatable {
   final bool frontlineMorale;
   final bool backlineMorale;
   final bool artylineMorale;
+  final DateTime? lastPlayTurn;
 
   const BattleSideState({
     this.score = 0,
@@ -27,6 +28,7 @@ class BattleSideState extends Equatable {
     this.frontlineMorale = false,
     this.backlineMorale = false,
     this.artylineMorale = false,
+    this.lastPlayTurn,
   });
 
   @override

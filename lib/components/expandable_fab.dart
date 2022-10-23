@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
-@immutable
 class ExpandableFab extends StatefulWidget {
   const ExpandableFab({
     Key? key,
@@ -24,7 +23,7 @@ class ExpandableFab extends StatefulWidget {
   static const double maxDistance = 200;
 
   @override
-  _ExpandableFabState createState() => _ExpandableFabState();
+  State<ExpandableFab> createState() => _ExpandableFabState();
 }
 
 class _ExpandableFabState extends State<ExpandableFab>
@@ -183,7 +182,6 @@ class _ExpandableFabState extends State<ExpandableFab>
   }
 }
 
-@immutable
 class _ExpandingActionButton extends StatelessWidget {
   const _ExpandingActionButton({
     Key? key,
@@ -226,7 +224,6 @@ class _ExpandingActionButton extends StatelessWidget {
   }
 }
 
-@immutable
 class ActionButton extends StatelessWidget {
   const ActionButton({
     Key? key,

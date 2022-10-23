@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gwentboard/components/_page/side_page.dart';
+
+import 'package:gwentboard/components/_layout/side_page.dart';
+
+// NOTE: This page has not been implemented yet.
 
 class CapturePage extends StatelessWidget {
   const CapturePage({Key? key}) : super(key: key);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:gwentboard/route_generator.dart';
-import 'package:gwentboard/components/_page/root_page.dart';
+import 'package:gwentboard/components/_layout/root_page.dart';
 import 'package:gwentboard/components/expandable_fab.dart';
 
 class HomePage extends StatelessWidget {
@@ -14,15 +14,17 @@ class HomePage extends StatelessWidget {
         children: [
           Expanded(
             child: AppBoardOption(
-              label: 'Full board',
-              background: Theme.of(context).primaryColorLight,
+              text: 'Full board',
+              colorBackground: Theme.of(context).colorScheme.primary,
+              colorText: Theme.of(context).colorScheme.onPrimary,
               onTap: () => Navigator.pushNamed(context, RoutePaths.fullBoard),
             ),
           ),
           Expanded(
             child: AppBoardOption(
-              label: 'Half board',
-              background: Theme.of(context).primaryColorDark,
+              text: 'Half board',
+              colorBackground: Theme.of(context).colorScheme.background,
+              colorText: Theme.of(context).colorScheme.onBackground,
               onTap: () => Navigator.pushNamed(context, RoutePaths.singleBoard),
             ),
           ),
@@ -35,7 +37,7 @@ class HomePage extends StatelessWidget {
         ),
         // ActionButton(
         //   onPressed: () => Navigator.pushNamed(context, RoutePaths.packs),
-        //   icon: const Icon(Icons.card_membership),
+        //   icon: const Icon(Icons.local_library),
         // ),
         // ActionButton(
         //   onPressed: () => Navigator.pushNamed(context, RoutePaths.capture),
@@ -51,14 +53,16 @@ class HomePage extends StatelessWidget {
 }
 
 class AppBoardOption extends StatelessWidget {
-  final String label;
-  final Color background;
+  final String text;
+  final Color colorBackground;
+  final Color colorText;
   final Function() onTap;
   const AppBoardOption({
     Key? key,
-    required this.label,
+    required this.text,
     required this.onTap,
-    required this.background,
+    required this.colorBackground,
+    required this.colorText,
   }) : super(key: key);
 
   @override
@@ -66,11 +70,13 @@ class AppBoardOption extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        color: background,
+        color: colorBackground,
         child: Center(
           child: Text(
-            label,
-            style: Theme.of(context).textTheme.headline5!,
+            text,
+            style: Theme.of(context).textTheme.headline5!.copyWith(
+                  color: colorText,
+                ),
           ),
         ),
       ),

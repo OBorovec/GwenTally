@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 
 import 'package:gwentboard/bloc/battle_side/battle_side_bloc.dart';
 import 'package:gwentboard/bloc/game/game_bloc.dart';
 import 'package:gwentboard/bloc/pack/pack_bloc.dart';
-import 'package:gwentboard/components/_page/pop_page.dart';
+import 'package:gwentboard/components/_layout/pop_page.dart';
 import 'package:gwentboard/components/battle_side/bs_score.dart';
 import 'package:gwentboard/components/battle_side/battle_side.dart';
 import 'package:gwentboard/components/game/game_control_state.dart';
@@ -28,10 +27,12 @@ class SingleBoardPage extends StatelessWidget {
       battleSideBlocB: battleSideBlocB,
       packBloc: packBloc,
     );
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-    return Provider(
-      create: (_) => BoardSizer.calcBoardSizer(width: width, height: height),
+    return RepositoryProvider(
+      create: (context) {
+        double width = MediaQuery.of(context).size.width;
+        double height = MediaQuery.of(context).size.height;
+        return BoardSizer.calcBoardSizer(width: width, height: height);
+      },
       child: Builder(builder: (context) {
         return PopDialogPage(
           body: Padding(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gwentboard/components/_page/side_page.dart';
+
+import 'package:gwentboard/components/_layout/side_page.dart';
 import 'package:gwentboard/constants/gwent_icons.dart';
 
 class InfoPage extends StatelessWidget {

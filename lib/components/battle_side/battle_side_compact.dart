@@ -2,13 +2,44 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:gwentboard/bloc/battle_side/battle_side_bloc.dart';
+import 'package:gwentboard/components/battle_side/bs_components.dart';
 import 'package:gwentboard/constants/gwent_icons.dart';
 import 'package:gwentboard/model/card_data.dart';
 import 'package:gwentboard/utils/board_sizer.dart';
-import 'package:gwentboard/components/battle_side/bs_components.dart';
 
-abstract class BattleLine extends StatelessWidget {
-  final bool collapsed;
+class BattleSideCompact extends StatelessWidget {
+  final bool reversed;
+  const BattleSideCompact({
+    Key? key,
+    this.reversed = false,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<BattleSideBloc, BattleSideState>(
+      builder: (context, state) {
+        List<Widget> columnContent = [
+          _FrontLine(
+            battleSideState: state,
+          ),
+          _BackLine(
+            battleSideState: state,
+          ),
+          _ArtyLine(
+            battleSideState: state,
+          ),
+        ];
+        if (reversed) columnContent = columnContent.reversed.toList();
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: columnContent,
+        );
+      },
+    );
+  }
+}
+
+abstract class _BattleLine extends StatelessWidget {
   final String title;
   final bool isMoral;
   final int lineValue;
@@ -19,9 +50,8 @@ abstract class BattleLine extends StatelessWidget {
   final IconData weatherIcon;
   final bool? commanderIcon;
 
-  const BattleLine({
+  const _BattleLine({
     Key? key,
-    required this.collapsed,
     required this.title,
     required this.isMoral,
     required this.lineValue,
@@ -50,15 +80,14 @@ abstract class BattleLine extends StatelessWidget {
                     style: Theme.of(context).textTheme.headline6!.copyWith(
                         fontSize: context.read<BoardSizer>().lineScoreFontSize),
                   ),
-                  if (!collapsed)
-                    CommanderHornSwitch(
-                      isOn: isMoral,
-                      iconSize: context.read<BoardSizer>().controlIconSize,
-                      onToggle: () {
-                        BlocProvider.of<BattleSideBloc>(context)
-                            .add(moralToggleEvent);
-                      },
-                    ),
+                  CommanderHornSwitch(
+                    isOn: isMoral,
+                    iconSize: context.read<BoardSizer>().controlIconSize,
+                    onToggle: () {
+                      BlocProvider.of<BattleSideBloc>(context)
+                          .add(moralToggleEvent);
+                    },
+                  ),
                 ],
               ),
               Expanded(
@@ -114,14 +143,12 @@ abstract class BattleLine extends StatelessWidget {
   }
 }
 
-class FrontLine extends BattleLine {
-  FrontLine({
+class _FrontLine extends _BattleLine {
+  _FrontLine({
     Key? key,
-    required bool collapsed,
     required BattleSideState battleSideState,
   }) : super(
           key: key,
-          collapsed: collapsed,
           title: 'Front line',
           isMoral: battleSideState.frontlineMorale,
           lineValue: battleSideState.frontlineCards
@@ -138,14 +165,12 @@ class FrontLine extends BattleLine {
         );
 }
 
-class BackLine extends BattleLine {
-  BackLine({
+class _BackLine extends _BattleLine {
+  _BackLine({
     Key? key,
-    required bool collapsed,
     required BattleSideState battleSideState,
   }) : super(
           key: key,
-          collapsed: collapsed,
           title: 'Back line',
           isMoral: battleSideState.backlineMorale,
           lineValue: battleSideState.backlineCards
@@ -161,14 +186,12 @@ class BackLine extends BattleLine {
         );
 }
 
-class ArtyLine extends BattleLine {
-  ArtyLine({
+class _ArtyLine extends _BattleLine {
+  _ArtyLine({
     Key? key,
-    required bool collapsed,
     required BattleSideState battleSideState,
   }) : super(
           key: key,
-          collapsed: collapsed,
           title: 'Arty line',
           isMoral: battleSideState.artylineMorale,
           lineValue: battleSideState.artylineCards

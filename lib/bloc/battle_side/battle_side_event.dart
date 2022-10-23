@@ -7,12 +7,12 @@ abstract class BattleSideEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class EmptyBattleSide extends BattleSideEvent {
-  const EmptyBattleSide();
+class ResetBattleSide extends BattleSideEvent {
+  const ResetBattleSide();
 }
 
-class CalculateScore extends BattleSideEvent {
-  const CalculateScore();
+class UpdateScore extends BattleSideEvent {
+  const UpdateScore();
 }
 
 class AddFrontlineCard extends BattleSideEvent {

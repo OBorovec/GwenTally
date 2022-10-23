@@ -2,9 +2,13 @@ import 'dart:math';
 
 import 'package:gwentboard/constants/board.dart';
 
+// TODO: Make it more readable
+
 class BoardSizer {
+  // General variables
   final double scale;
   final double scoreFontSize;
+  // Variables depending on scale
   final double cardHeight;
   final double cardWidth;
   final double cardPadding;
@@ -20,14 +24,16 @@ class BoardSizer {
   final double controlIconSize;
   final double controlIconPaddingVertical;
   final double controlIconPaddingHorizontal;
+  // Computed variable from above
   final double controlIconWidth;
   final double controlIconHeight;
+
   final double battleSideHeight;
   final double controlLineHeight;
   final double controlLineWidth;
-  // flags
+  // Flags
   final bool isSingleLinePack;
-  final bool isForceOpen;
+  final bool useFullViews;
 
   const BoardSizer({
     this.scale = 1,
@@ -62,7 +68,7 @@ class BoardSizer {
         2 * 16 +
         12 * BoardDims.controlIconPaddingHorizontal,
     this.isSingleLinePack = false,
-    this.isForceOpen = true,
+    this.useFullViews = true,
   });
 
   static BoardSizer calcBoardSizer({
@@ -72,15 +78,17 @@ class BoardSizer {
     double scale =
         min(height * 0.95, BoardDims.maxBoardHeight) / BoardDims.minBoardHeight;
     scale = (scale * 10).floorToDouble() / 10;
+    // Show minimal board size with collapsible sides
     if (scale < 1) {
       return BoardSizer(
         scale: scale,
-        isForceOpen: false,
+        useFullViews: false,
       );
     }
-    // Scale up
+    // Show scaled up board
     return BoardSizer(
       scale: scale,
+      useFullViews: true,
       scoreFontSize: (BoardDims.scoreFontSize * scale).floorToDouble(),
       cardHeight: (BoardDims.cardHeight * scale).floorToDouble(),
       cardWidth: (BoardDims.cardWidth * scale).floorToDouble(),

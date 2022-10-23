@@ -1,7 +1,7 @@
 name: gwentboard
 description: Gwent board score tracker.
 publish_to: "none"
-version: 1.0.0+2
+version: 1.0.1+1
 
 environment:
   sdk: ">=2.18.0 <3.0.0"
