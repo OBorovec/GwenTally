@@ -15,14 +15,14 @@ import 'package:gwentboard/components/pack/pack_control.dart';
 import 'package:gwentboard/components/pack/pack_wrap.dart';
 import 'package:gwentboard/utils/board_sizer.dart';
 
-class FullBoardPage extends StatefulWidget {
-  const FullBoardPage({Key? key}) : super(key: key);
+class V2Board extends StatefulWidget {
+  const V2Board({Key? key}) : super(key: key);
 
   @override
-  State<FullBoardPage> createState() => _FullBoardPageState();
+  State<V2Board> createState() => _V2BoardState();
 }
 
-class _FullBoardPageState extends State<FullBoardPage> {
+class _V2BoardState extends State<V2Board> {
   late GameBloc gameBloc;
   late PackBloc packBloc;
   late GameSideFocusBloc gameSideFocusBloc;
@@ -151,10 +151,10 @@ class _FullBoardPageState extends State<FullBoardPage> {
     return SizedBox(
       height: context.read<BoardSizer>().controlLineHeight,
       width: context.read<BoardSizer>().controlLineWidth,
-      child: Row(
+      child: const Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: const [
+        children: [
           FrostWeatherSwitch(),
           FogWeatherSwitch(),
           RainWeatherSwitch(),
@@ -178,14 +178,14 @@ class _FullBoardPageState extends State<FullBoardPage> {
           child: BlocProvider(
               create: (context) => packBloc,
               child: !context.read<BoardSizer>().isSingleLinePack
-                  ? Row(
-                      children: const [
+                  ? const Row(
+                      children: [
                         Expanded(child: CardPackWrap()),
                         PackControl(),
                       ],
                     )
-                  : Column(
-                      children: const [PackControlRow(), CardPackWrap()],
+                  : const Column(
+                      children: [PackControlRow(), CardPackWrap()],
                     )),
         ),
       ],

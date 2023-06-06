@@ -1,5 +1,7 @@
 # Gwent Board
 
+Welcome to GwentBoard! This is a tool designed to help players keep track of the score while playing the card game Gwent. It is available on both Google Play and the Apple Store.
+
 <table>
     <tr>
         <td><img alt="Gwent board icon" src="assets/icon.png" width="200"></td>

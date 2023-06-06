@@ -13,7 +13,7 @@ class BattleSideScore extends StatelessWidget {
       builder: (context, state) {
         return Text(
           state.score.toString(),
-          style: Theme.of(context).textTheme.headline5!.copyWith(
+          style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                 fontSize: context.read<BoardSizer>().scoreFontSize,
               ),
         );

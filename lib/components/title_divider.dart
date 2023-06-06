@@ -18,7 +18,7 @@ class TitleDivider extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 32.0),
           child: Text(
             title,
-            style: style ?? Theme.of(context).textTheme.headline6,
+            style: style ?? Theme.of(context).textTheme.titleLarge,
           ),
         ),
         const Expanded(child: Divider()),

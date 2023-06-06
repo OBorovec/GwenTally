@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:gwentboard/route_generator.dart';
 import 'package:gwentboard/components/_layout/root_page.dart';
-import 'package:gwentboard/components/expandable_fab.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -14,7 +13,7 @@ class HomePage extends StatelessWidget {
         children: [
           Expanded(
             child: AppBoardOption(
-              text: 'Full board',
+              text: 'Original',
               colorBackground: Theme.of(context).colorScheme.primary,
               colorText: Theme.of(context).colorScheme.onPrimary,
               onTap: () => Navigator.pushNamed(context, RoutePaths.fullBoard),
@@ -22,7 +21,7 @@ class HomePage extends StatelessWidget {
           ),
           Expanded(
             child: AppBoardOption(
-              text: 'Half board',
+              text: 'Gwent 2.0',
               colorBackground: Theme.of(context).colorScheme.background,
               colorText: Theme.of(context).colorScheme.onBackground,
               onTap: () => Navigator.pushNamed(context, RoutePaths.singleBoard),
@@ -30,11 +29,11 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      actionButtons: [
-        ActionButton(
-          onPressed: () => Navigator.pushNamed(context, RoutePaths.info),
-          icon: const Icon(Icons.info),
-        ),
+      actionButtons: const [
+        // ActionButton(
+        //   onPressed: () => Navigator.pushNamed(context, RoutePaths.info),
+        //   icon: const Icon(Icons.info),
+        // ),
         // ActionButton(
         //   onPressed: () => Navigator.pushNamed(context, RoutePaths.packs),
         //   icon: const Icon(Icons.local_library),
@@ -74,7 +73,7 @@ class AppBoardOption extends StatelessWidget {
         child: Center(
           child: Text(
             text,
-            style: Theme.of(context).textTheme.headline5!.copyWith(
+            style: Theme.of(context).textTheme.displaySmall!.copyWith(
                   color: colorText,
                 ),
           ),

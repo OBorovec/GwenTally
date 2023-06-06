@@ -79,7 +79,7 @@ abstract class _BattleLine extends StatelessWidget {
                 children: [
                   Text(
                     lineValue.toString(),
-                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
                         fontSize: context.read<BoardSizer>().lineScoreFontSize),
                   ),
                   CommanderHornSwitch(
@@ -114,7 +114,7 @@ abstract class _BattleLine extends StatelessWidget {
             alignment: Alignment.topCenter,
             child: Text(
               title,
-              style: Theme.of(context).textTheme.headline6!.copyWith(
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     fontSize: context.read<BoardSizer>().lineTitleFontSize,
                   ),
             ),

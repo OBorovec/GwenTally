@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:gwentboard/views/board_full.dart';
-import 'package:gwentboard/views/board_half.dart';
+import 'package:gwentboard/views/board_original.dart';
+import 'package:gwentboard/views/board_v2.dart';
 import 'package:gwentboard/views/capture.dart';
 import 'package:gwentboard/views/home.dart';
 import 'package:gwentboard/views/info.dart';
@@ -26,9 +26,9 @@ class RouteGenerator {
       case RoutePaths.home:
         return MaterialPageRoute(builder: (_) => const HomePage());
       case RoutePaths.singleBoard:
-        return MaterialPageRoute(builder: (_) => const SingleBoardPage());
+        return MaterialPageRoute(builder: (_) => const V2Board());
       case RoutePaths.fullBoard:
-        return MaterialPageRoute(builder: (_) => const FullBoardPage());
+        return MaterialPageRoute(builder: (_) => const OriginalBoard());
       case RoutePaths.info:
         return MaterialPageRoute(builder: (_) => const InfoPage());
       case RoutePaths.packs:

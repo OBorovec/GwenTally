@@ -102,7 +102,7 @@ class BoardCard extends StatelessWidget {
                 data.activeValue != null
                     ? data.activeValue.toString()
                     : data.baseValue.toString(),
-                style: Theme.of(context).textTheme.headline5!.copyWith(
+                style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                       // fontSize: context.read<BoardSizer>().cardActiveFontSize,
                       fontSize: sizer.cardActiveFontSize,
                       color: _cardValueColor(),
@@ -114,7 +114,7 @@ class BoardCard extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 child: Text(
                   data.baseValue.toString(),
-                  style: Theme.of(context).textTheme.headline6!.copyWith(
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
                         // fontSize:
                         //     context.read<BoardSizer>().cardPassiveFontSize,
                         fontSize: sizer.cardPassiveFontSize,
