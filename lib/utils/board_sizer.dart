@@ -27,7 +27,6 @@ class BoardSizer {
   // Computed variable from above
   final double controlIconWidth;
   final double controlIconHeight;
-
   final double battleSideHeight;
   final double controlLineHeight;
   final double controlLineWidth;

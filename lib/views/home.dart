@@ -16,15 +16,18 @@ class HomePage extends StatelessWidget {
               text: 'Original',
               colorBackground: Theme.of(context).colorScheme.primary,
               colorText: Theme.of(context).colorScheme.onPrimary,
-              onTap: () => Navigator.pushNamed(context, RoutePaths.fullBoard),
+              onTap: () =>
+                  Navigator.pushNamed(context, RoutePaths.originalBoard),
             ),
           ),
           Expanded(
             child: AppBoardOption(
-              text: 'Gwent 2.0',
+              text: 'Gwent 2.0 \n Coming soon',
               colorBackground: Theme.of(context).colorScheme.background,
               colorText: Theme.of(context).colorScheme.onBackground,
-              onTap: () => Navigator.pushNamed(context, RoutePaths.singleBoard),
+              onTap: () => null,
+              // onTap: () =>
+              //     Navigator.pushNamed(context, RoutePaths.originalBoard),
             ),
           ),
         ],
@@ -76,6 +79,7 @@ class AppBoardOption extends StatelessWidget {
             style: Theme.of(context).textTheme.displaySmall!.copyWith(
                   color: colorText,
                 ),
+            textAlign: TextAlign.center,
           ),
         ),
       ),

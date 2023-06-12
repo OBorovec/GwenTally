@@ -30,3 +30,10 @@ class ToggleFogWeather extends GameEvent {}
 class ToggleRainWeather extends GameEvent {}
 
 class ScorchCards extends GameEvent {}
+
+class RequestFocus extends GameEvent {
+  final GameSideFocus sideFocus;
+  const RequestFocus({
+    required this.sideFocus,
+  });
+}

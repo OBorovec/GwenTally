@@ -39,7 +39,7 @@ class BattleSideCompact extends StatelessWidget {
   }
 }
 
-abstract class _BattleLine extends StatelessWidget {
+abstract class _BattleLineInfo extends StatelessWidget {
   final String title;
   final bool isMoral;
   final int lineValue;
@@ -48,9 +48,8 @@ abstract class _BattleLine extends StatelessWidget {
   final Function(CardData data) onAddCardEvent;
   final Function(CardData data) onRemoveCardEvent;
   final IconData weatherIcon;
-  final bool? commanderIcon;
 
-  const _BattleLine({
+  const _BattleLineInfo({
     Key? key,
     required this.title,
     required this.isMoral,
@@ -60,7 +59,6 @@ abstract class _BattleLine extends StatelessWidget {
     required this.onAddCardEvent,
     required this.onRemoveCardEvent,
     required this.weatherIcon,
-    this.commanderIcon,
   }) : super(key: key);
 
   @override
@@ -75,11 +73,6 @@ abstract class _BattleLine extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  Text(
-                    lineValue.toString(),
-                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                        fontSize: context.read<BoardSizer>().lineScoreFontSize),
-                  ),
                   CommanderHornSwitch(
                     isOn: isMoral,
                     iconSize: context.read<BoardSizer>().controlIconSize,
@@ -91,16 +84,23 @@ abstract class _BattleLine extends StatelessWidget {
                 ],
               ),
               Expanded(
-                child: CardLine(
-                  cards: cards,
-                  onAccept: (CardData cd) =>
-                      BlocProvider.of<BattleSideBloc>(context)
-                          .add(onAddCardEvent(cd)),
-                  onRemove: (CardData cd) =>
-                      BlocProvider.of<BattleSideBloc>(context)
-                          .add(onRemoveCardEvent(cd)),
-                ),
-              ),
+                  child: Row(
+                children: [
+                  const Expanded(
+                    child: Divider(),
+                  ),
+                  const SizedBox(width: 24),
+                  Text(
+                    '$lineValue - ${cards.length}x cards',
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                        fontSize: context.read<BoardSizer>().lineScoreFontSize),
+                  ),
+                  const SizedBox(width: 24),
+                  const Expanded(
+                    child: Divider(),
+                  ),
+                ],
+              )),
             ],
           ),
         ),
@@ -127,23 +127,12 @@ abstract class _BattleLine extends StatelessWidget {
             color: Theme.of(context).colorScheme.secondary,
           ),
         ),
-        if (commanderIcon != null)
-          Positioned(
-            bottom: 0,
-            right: 0,
-            child: CommanderSwitch(
-              isOn: commanderIcon!,
-              iconSize: context.read<BoardSizer>().lineWeatherIconSize,
-              onToggle: () => BlocProvider.of<BattleSideBloc>(context)
-                  .add(const ToggleCommanderCard()),
-            ),
-          ),
       ],
     );
   }
 }
 
-class _FrontLine extends _BattleLine {
+class _FrontLine extends _BattleLineInfo {
   _FrontLine({
     Key? key,
     required BattleSideState battleSideState,
@@ -161,11 +150,10 @@ class _FrontLine extends _BattleLine {
           weatherIcon: battleSideState.frontlineWeather
               ? GwentIcons.snow
               : GwentIcons.sunny,
-          commanderIcon: battleSideState.commanderPlayed,
         );
 }
 
-class _BackLine extends _BattleLine {
+class _BackLine extends _BattleLineInfo {
   _BackLine({
     Key? key,
     required BattleSideState battleSideState,
@@ -186,7 +174,7 @@ class _BackLine extends _BattleLine {
         );
 }
 
-class _ArtyLine extends _BattleLine {
+class _ArtyLine extends _BattleLineInfo {
   _ArtyLine({
     Key? key,
     required BattleSideState battleSideState,

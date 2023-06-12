@@ -3,33 +3,45 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:gwentboard/bloc/pack/pack_bloc.dart';
 import 'package:gwentboard/components/_control/toggle_icon.dart';
+import 'package:gwentboard/components/_control/toggle_image.dart';
 import 'package:gwentboard/constants/gwent_icons.dart';
 import 'package:gwentboard/utils/board_sizer.dart';
 
 abstract class PackIconSwitch extends StatelessWidget {
-  final IconData iconData;
+  final IconData? iconData;
+  final AssetImage? assetImage;
   const PackIconSwitch({
     Key? key,
-    required this.iconData,
-  }) : super(key: key);
+    this.iconData,
+    this.assetImage,
+  })  : assert(iconData != null || assetImage != null),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PackBloc, PackState>(
+      buildWhen: (previous, current) => _getIsOn(previous) != _getIsOn(current),
       builder: (context, state) {
         final bool isOn = _getIsOn(state);
         return Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: context.read<BoardSizer>().controlIconPaddingHorizontal,
-            vertical: context.read<BoardSizer>().controlIconPaddingVertical,
-          ),
-          child: ToggleIcon(
-            isOn: isOn,
-            iconData: iconData,
-            iconSize: context.read<BoardSizer>().controlIconSize,
-            onTap: () => _onTap(context),
-          ),
-        );
+            padding: EdgeInsets.symmetric(
+              horizontal:
+                  context.read<BoardSizer>().controlIconPaddingHorizontal,
+              vertical: context.read<BoardSizer>().controlIconPaddingVertical,
+            ),
+            child: iconData != null
+                ? ToggleIcon(
+                    isOn: isOn,
+                    iconData: iconData!,
+                    iconSize: context.read<BoardSizer>().controlIconSize,
+                    onTap: () => _onTap(context),
+                  )
+                : ToggleImage(
+                    isOn: isOn,
+                    assetImage: assetImage!,
+                    iconSize: context.read<BoardSizer>().controlIconSize,
+                    onTap: () => _onTap(context),
+                  ));
       },
     );
   }
@@ -39,52 +51,22 @@ abstract class PackIconSwitch extends StatelessWidget {
   void _onTap(BuildContext context);
 }
 
-// class HornIconSwitch extends PackIconSwitch {
-//   HornIconSwitch({
-//     Key? key,
-//   }) : super(
-//           key: key,
-//           iconData: GwentIcons.commanderHorn,
-//         );
-
-//   @override
-//   bool _getIsOn(PackState state) {
-//     return state.attHorn;
-//   }
-
-//   @override
-//   void _onTap(BuildContext context) {
-//     BlocProvider.of<PackBloc>(context).add(TogglePackHorn());
-//   }
-// }
-
-class HornIconSwitch extends StatelessWidget {
-  const HornIconSwitch({Key? key}) : super(key: key);
+class HornIconSwitch extends PackIconSwitch {
+  const HornIconSwitch({
+    Key? key,
+  }) : super(
+          key: key,
+          assetImage: GwentIcons.commanderHorn,
+        );
 
   @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<PackBloc, PackState>(
-      builder: (context, state) {
-        final bool isOn = state.attHorn;
-        return Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: context.read<BoardSizer>().controlIconPaddingHorizontal,
-            vertical: context.read<BoardSizer>().controlIconPaddingVertical,
-          ),
-          child: InkWell(
-            onTap: () =>
-                BlocProvider.of<PackBloc>(context).add(TogglePackHorn()),
-            child: ImageIcon(
-              GwentIcons.commanderHorn,
-              size: context.read<BoardSizer>().controlIconSize,
-              color: isOn
-                  ? Theme.of(context).colorScheme.secondary
-                  : Theme.of(context).colorScheme.onSecondary,
-            ),
-          ),
-        );
-      },
-    );
+  bool _getIsOn(PackState state) {
+    return state.attHorn;
+  }
+
+  @override
+  void _onTap(BuildContext context) {
+    BlocProvider.of<PackBloc>(context).add(TogglePackHorn());
   }
 }
 
@@ -162,4 +144,38 @@ class DoubleMoralIconSwitch extends PackIconSwitch {
   void _onTap(BuildContext context) {
     BlocProvider.of<PackBloc>(context).add(TogglePackDoubleMoral());
   }
+}
+
+class SpyIconSwitch extends PackIconSwitch {
+  const SpyIconSwitch({
+    Key? key,
+  }) : super(
+          key: key,
+          iconData: GwentIcons.spy,
+        );
+
+  @override
+  bool _getIsOn(PackState state) {
+    return false;
+  }
+
+  @override
+  void _onTap(BuildContext context) {}
+}
+
+class HybridIconSwitch extends PackIconSwitch {
+  const HybridIconSwitch({
+    Key? key,
+  }) : super(
+          key: key,
+          iconData: GwentIcons.hybrid,
+        );
+
+  @override
+  bool _getIsOn(PackState state) {
+    return false;
+  }
+
+  @override
+  void _onTap(BuildContext context) {}
 }

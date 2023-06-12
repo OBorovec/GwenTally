@@ -33,6 +33,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     on<ToggleFogWeather>(_toggleFogWeather);
     on<ToggleRainWeather>(_toggleRainWeather);
     on<ScorchCards>(_scorchCards);
+    on<RequestFocus>(_requestFocus);
   }
 
   void _onBattleSideBlocAChange(BattleSideState battleState) {
@@ -109,6 +110,15 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     int highestValue = _getHighestCardScore();
     battleSideBlocA.add(DeleteCardsWithValue(value: highestValue));
     battleSideBlocB.add(DeleteCardsWithValue(value: highestValue));
+  }
+
+  FutureOr<void> _requestFocus(
+    RequestFocus event,
+    Emitter<GameState> emit,
+  ) {
+    emit(state.copyWith(
+      sideFocus: event.sideFocus,
+    ));
   }
 
   @override

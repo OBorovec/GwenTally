@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:gwentboard/bloc/battle_side/battle_side_bloc.dart';
 import 'package:gwentboard/bloc/game/game_bloc.dart';
-import 'package:gwentboard/bloc/game_side_focus/game_side_focus_bloc.dart';
 import 'package:gwentboard/bloc/pack/pack_bloc.dart';
 import 'package:gwentboard/components/_layout/pop_page.dart';
 import 'package:gwentboard/components/battle_side/battle_side.dart';
@@ -26,22 +25,14 @@ class OriginalBoard extends StatefulWidget {
 class _OriginalBoardState extends State<OriginalBoard> {
   late GameBloc gameBloc;
   late PackBloc packBloc;
-  late GameSideFocusBloc gameSideFocusBloc;
   late BattleSideBloc battleSideBlocA;
   late BattleSideBloc battleSideBlocB;
 
   @override
   void initState() {
     super.initState();
-    gameSideFocusBloc = GameSideFocusBloc();
-    battleSideBlocA = BattleSideBloc(
-      requestFocus: () => gameSideFocusBloc.add(const GameSideFocusEventA()),
-      releaseFocus: () => gameSideFocusBloc.add(const GameSideFocusEventB()),
-    );
-    battleSideBlocB = BattleSideBloc(
-      requestFocus: () => gameSideFocusBloc.add(const GameSideFocusEventB()),
-      releaseFocus: () => gameSideFocusBloc.add(const GameSideFocusEventA()),
-    );
+    battleSideBlocA = BattleSideBloc();
+    battleSideBlocB = BattleSideBloc();
     packBloc = PackBloc();
     gameBloc = GameBloc(
       battleSideBlocA: battleSideBlocA,
@@ -51,9 +42,11 @@ class _OriginalBoardState extends State<OriginalBoard> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       showDialog(
         context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return const MarchStartDialog();
+        builder: (BuildContext dialogContext) {
+          return BlocProvider.value(
+            value: gameBloc,
+            child: const MarchStartDialog(),
+          );
         },
       );
     });
@@ -71,48 +64,45 @@ class _OriginalBoardState extends State<OriginalBoard> {
       body: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (_) => gameBloc,
-          ),
-          BlocProvider(
-            create: (_) => gameSideFocusBloc
-              ..add(
-                GameSideFocusEventInit(
+            create: (_) => gameBloc
+              ..add(RequestFocus(
                   sideFocus: boardSizer.useFullViews
                       ? GameSideFocus.both
-                      : GameSideFocus.none,
-                ),
-              ),
+                      : GameSideFocus.A)),
           ),
         ],
         child: RepositoryProvider(
           create: (context) {
             return boardSizer;
           },
-          child: Builder(builder: (context) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildSideA(),
-                  const SizedBox(height: 12),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _buildScore(),
-                      Expanded(
-                        child: _buildPackControl(context),
-                      ),
-                    ],
-                  ),
-                  _buildGameControl(context),
-                  const SizedBox(height: 8),
-                  _buildSideB(),
-                ],
-              ),
-            );
-          }),
+          child: BlocListener<GameBloc, GameState>(
+            listener: (context, state) {},
+            child: Builder(builder: (context) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildSideA(),
+                    const SizedBox(height: 12),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildScore(),
+                        Expanded(
+                          child: _buildPackControl(context),
+                        ),
+                      ],
+                    ),
+                    _buildGameControl(context),
+                    const SizedBox(height: 8),
+                    _buildSideB(),
+                  ],
+                ),
+              );
+            }),
+          ),
         ),
       ),
     );
@@ -129,26 +119,21 @@ class _OriginalBoardState extends State<OriginalBoard> {
                 ],
               )
             : const Column(
-                children: [PackControlRow(), CardPackWrap()],
+                children: [
+                  PackControlRow(),
+                  CardPackWrap(),
+                ],
               ));
   }
 
   GameScore _buildScore() => const GameScore();
 
-  @override
-  void dispose() {
-    gameBloc.close();
-    battleSideBlocA.close();
-    battleSideBlocB.close();
-    packBloc.close();
-    gameSideFocusBloc.close();
-    super.dispose();
-  }
-
   Widget _buildSideA() {
     return BlocProvider(
       create: (context) => battleSideBlocA,
-      child: BlocBuilder<GameSideFocusBloc, GameSideFocusState>(
+      child: BlocBuilder<GameBloc, GameState>(
+        buildWhen: (previous, current) =>
+            previous.sideFocus != current.sideFocus,
         builder: (context, state) {
           final bool fullView = state.sideFocus == GameSideFocus.both ||
               state.sideFocus == GameSideFocus.A;
@@ -156,8 +141,19 @@ class _OriginalBoardState extends State<OriginalBoard> {
             duration: const Duration(milliseconds: 200),
             crossFadeState:
                 fullView ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-            firstChild: const BattleSideCompact(reversed: true),
-            secondChild: const BattleSide(reversed: true),
+            firstChild: const BattleSide(reversed: true),
+            secondChild: Column(
+              children: [
+                const BattleSideCompact(reversed: true),
+                const SizedBox(height: 12),
+                ElevatedButton(
+                  onPressed: () => BlocProvider.of<GameBloc>(context).add(
+                    const RequestFocus(sideFocus: GameSideFocus.A),
+                  ),
+                  child: const Text('Expand...'),
+                ),
+              ],
+            ),
           );
         },
       ),
@@ -167,7 +163,9 @@ class _OriginalBoardState extends State<OriginalBoard> {
   Widget _buildSideB() {
     return BlocProvider(
       create: (context) => battleSideBlocB,
-      child: BlocBuilder<GameSideFocusBloc, GameSideFocusState>(
+      child: BlocBuilder<GameBloc, GameState>(
+        buildWhen: (previous, current) =>
+            previous.sideFocus != current.sideFocus,
         builder: (context, state) {
           final bool fullView = state.sideFocus == GameSideFocus.both ||
               state.sideFocus == GameSideFocus.B;
@@ -175,8 +173,19 @@ class _OriginalBoardState extends State<OriginalBoard> {
             duration: const Duration(milliseconds: 200),
             crossFadeState:
                 fullView ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-            firstChild: const BattleSideCompact(),
-            secondChild: const BattleSide(),
+            firstChild: const BattleSide(),
+            secondChild: Column(
+              children: [
+                const BattleSideCompact(),
+                const SizedBox(height: 12),
+                ElevatedButton(
+                  onPressed: () => BlocProvider.of<GameBloc>(context).add(
+                    const RequestFocus(sideFocus: GameSideFocus.B),
+                  ),
+                  child: const Text('Expand...'),
+                ),
+              ],
+            ),
           );
         },
       ),
@@ -196,11 +205,20 @@ class _OriginalBoardState extends State<OriginalBoard> {
           RainWeatherSwitch(),
           VerticalDivider(),
           ScorchButton(),
-          ResetButton(),
           VerticalDivider(),
+          ResetButton(),
           ExitButton(),
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    gameBloc.close();
+    battleSideBlocA.close();
+    battleSideBlocB.close();
+    packBloc.close();
+    super.dispose();
   }
 }

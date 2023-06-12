@@ -10,12 +10,7 @@ part 'battle_side_event.dart';
 part 'battle_side_state.dart';
 
 class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
-  final Function()? requestFocus;
-  final Function()? releaseFocus;
-  BattleSideBloc({
-    this.requestFocus,
-    this.releaseFocus,
-  }) : super(const BattleSideState()) {
+  BattleSideBloc() : super(const BattleSideState()) {
     on<ResetBattleSide>(_onResetBattleSide);
     on<UpdateScore>(_onUpdateScore);
     on<AddFrontlineCard>(_addFrontlineCard);
@@ -172,7 +167,6 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
       ),
     );
     add(const UpdateScore());
-    releaseFocus?.call();
   }
 
   FutureOr<void> _addBacklineCard(

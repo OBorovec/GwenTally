@@ -12,7 +12,8 @@ const defaultNormalCards = <CardData>[
   CardData(baseValue: 8),
   CardData(baseValue: 9),
   CardData(baseValue: 10),
-  CardData(baseValue: 11),
+  CardData(baseValue: 12),
+  CardData(baseValue: 14),
 ];
 
 const defaultGoldCards = <CardData>[
@@ -20,6 +21,7 @@ const defaultGoldCards = <CardData>[
   CardData(baseValue: 7, attHero: true),
   CardData(baseValue: 8, attHero: true),
   CardData(baseValue: 10, attHero: true),
+  CardData(baseValue: 11, attHero: true),
   CardData(baseValue: 15, attHero: true),
 ];
 

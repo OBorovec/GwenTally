@@ -1,6 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:gwentboard/bloc/game/game_bloc.dart';
 
 class MarchStartDialog extends StatefulWidget {
   const MarchStartDialog({
@@ -58,22 +61,6 @@ class _MarchStartDialogState extends State<MarchStartDialog> {
           ),
         ],
       ),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () {
-            // TODO: Add event to bloc to set the starting side
-            Navigator.pop(context);
-          },
-          child: const Text('Side A'),
-        ),
-        TextButton(
-          onPressed: () {
-            // TODO: Add event to bloc to set the starting side
-            Navigator.pop(context);
-          },
-          child: const Text('Side B'),
-        ),
-      ],
     );
   }
 
@@ -119,7 +106,7 @@ class _CoinFlipperState extends State<_CoinFlipper>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(seconds: 3),
+      duration: const Duration(seconds: 2),
       vsync: this,
     );
     _animation = Tween<double>(begin: 0, end: 1).animate(_controller);

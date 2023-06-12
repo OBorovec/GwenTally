@@ -20,7 +20,6 @@ class CardPackWrap extends StatelessWidget {
               .map(
                 (CardData cvd) => DraggableCard(
                   data: cvd,
-                  // TODO: delete after they fix it
                   sizer: context.read<BoardSizer>(),
                 ),
               )

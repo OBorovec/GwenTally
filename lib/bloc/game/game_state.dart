@@ -1,4 +1,7 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'game_bloc.dart';
+
+enum GameSideFocus { A, B, both }
 
 class GameState extends Equatable {
   final int scoreA;
@@ -7,6 +10,7 @@ class GameState extends Equatable {
   final bool isFog;
   final bool isRain;
   final int highestCardScore;
+  final GameSideFocus sideFocus;
 
   const GameState({
     this.scoreA = 0,
@@ -15,6 +19,7 @@ class GameState extends Equatable {
     this.isFog = false,
     this.isRain = false,
     this.highestCardScore = 0,
+    this.sideFocus = GameSideFocus.both,
   });
 
   @override
@@ -34,6 +39,7 @@ class GameState extends Equatable {
     bool? isFog,
     bool? isRain,
     int? highestCardScore,
+    GameSideFocus? sideFocus,
   }) {
     return GameState(
       scoreA: scoreA ?? this.scoreA,
@@ -42,6 +48,7 @@ class GameState extends Equatable {
       isFog: isFog ?? this.isFog,
       isRain: isRain ?? this.isRain,
       highestCardScore: highestCardScore ?? this.highestCardScore,
+      sideFocus: sideFocus ?? this.sideFocus,
     );
   }
 }

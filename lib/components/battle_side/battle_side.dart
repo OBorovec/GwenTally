@@ -50,7 +50,6 @@ abstract class _BattleLine extends StatelessWidget {
   final Function(CardData data) onAddCardEvent;
   final Function(CardData data) onRemoveCardEvent;
   final IconData weatherIcon;
-  final bool? commanderIcon;
 
   const _BattleLine({
     Key? key,
@@ -62,7 +61,6 @@ abstract class _BattleLine extends StatelessWidget {
     required this.onAddCardEvent,
     required this.onRemoveCardEvent,
     required this.weatherIcon,
-    this.commanderIcon,
   }) : super(key: key);
 
   @override
@@ -129,17 +127,6 @@ abstract class _BattleLine extends StatelessWidget {
             color: Theme.of(context).colorScheme.secondary,
           ),
         ),
-        if (commanderIcon != null)
-          Positioned(
-            bottom: 0,
-            right: 0,
-            child: CommanderSwitch(
-              isOn: commanderIcon!,
-              iconSize: context.read<BoardSizer>().lineWeatherIconSize,
-              onToggle: () => BlocProvider.of<BattleSideBloc>(context)
-                  .add(const ToggleCommanderCard()),
-            ),
-          ),
       ],
     );
   }
@@ -163,7 +150,6 @@ class _FrontLine extends _BattleLine {
           weatherIcon: battleSideState.frontlineWeather
               ? GwentIcons.snow
               : GwentIcons.sunny,
-          commanderIcon: battleSideState.commanderPlayed,
         );
 }
 

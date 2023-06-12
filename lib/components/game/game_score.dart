@@ -14,14 +14,14 @@ class GameScore extends StatelessWidget {
         return Column(
           children: [
             Text(
-              state.scoreA.toString().padLeft(2, '0'),
+              state.scoreA.toString().padLeft(2, '0').padLeft(3, ' '),
               style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                     fontSize: context.read<BoardSizer>().scoreFontSize,
                   ),
             ),
             const Text('vs'),
             Text(
-              state.scoreB.toString().padLeft(2, '0'),
+              state.scoreB.toString().padLeft(2, '0').padLeft(3, ' '),
               style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                     fontSize: context.read<BoardSizer>().scoreFontSize,
                   ),
