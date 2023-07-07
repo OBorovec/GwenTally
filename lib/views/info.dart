@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:gwentboard/components/_layout/side_page.dart';
+import 'package:gwentboard/components/shared/layout/side_page.dart';
 import 'package:gwentboard/constants/gwent_icons.dart';
 
 class InfoPage extends StatelessWidget {
@@ -110,11 +110,11 @@ class IconDescription extends StatelessWidget {
           'Muster',
         ),
         _buildItem(
-          const Icon(GwentIcons.moral),
+          const Icon(GwentIcons.morale),
           'Moral',
         ),
         _buildItem(
-          const Icon(GwentIcons.doubleMoral),
+          const Icon(GwentIcons.doubleMorale),
           'Double moral',
         ),
         _buildItem(

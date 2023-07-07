@@ -1,51 +1,62 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 
 class CardData extends Equatable {
-  final DateTime? initTime;
   final int baseValue;
-  final int? activeValue;
   final bool attMuster;
   final bool attTightBond;
-  final bool attMoral;
-  final bool attDoubleMoral;
+  final bool attMorale;
+  final bool attDoubleMorale;
+  final bool attDemorale;
   final bool attCommanderHorn;
+  final bool attWeatherResistance;
   final bool attHero;
 
   const CardData({
-    this.initTime,
     required this.baseValue,
-    this.activeValue,
     this.attMuster = false,
     this.attTightBond = false,
-    this.attMoral = false,
-    this.attDoubleMoral = false,
+    this.attMorale = false,
+    this.attDoubleMorale = false,
+    this.attDemorale = false,
     this.attCommanderHorn = false,
+    this.attWeatherResistance = false,
     this.attHero = false,
   });
 
   @override
-  List<Object?> get props => [initTime];
+  List<Object?> get props => [
+        baseValue,
+        attMuster,
+        attTightBond,
+        attMorale,
+        attDoubleMorale,
+        attDemorale,
+        attCommanderHorn,
+        attWeatherResistance,
+        attHero
+      ];
 
   CardData copyWith({
-    DateTime? initTime,
     int? baseValue,
-    int? activeValue,
     bool? attMuster,
     bool? attTightBond,
-    bool? attMoral,
-    bool? attDoubleMoral,
+    bool? attMorale,
+    bool? attDoubleMorale,
+    bool? attDemorale,
     bool? attCommanderHorn,
+    bool? attWeatherResistance,
     bool? attHero,
   }) {
     return CardData(
-      initTime: initTime ?? this.initTime,
       baseValue: baseValue ?? this.baseValue,
-      activeValue: activeValue ?? this.activeValue,
       attMuster: attMuster ?? this.attMuster,
       attTightBond: attTightBond ?? this.attTightBond,
-      attMoral: attMoral ?? this.attMoral,
-      attDoubleMoral: attDoubleMoral ?? this.attDoubleMoral,
+      attMorale: attMorale ?? this.attMorale,
+      attDoubleMorale: attDoubleMorale ?? this.attDoubleMorale,
+      attDemorale: attDemorale ?? this.attDemorale,
       attCommanderHorn: attCommanderHorn ?? this.attCommanderHorn,
+      attWeatherResistance: attWeatherResistance ?? this.attWeatherResistance,
       attHero: attHero ?? this.attHero,
     );
   }

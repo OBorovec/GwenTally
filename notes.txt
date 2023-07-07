@@ -1,0 +1,33 @@
+range dej do 15ti
+
+jak je tam +1 v rade, tak pridej i -1
+
+zbytek poslu až budu doma
+
+pocasi musi jit hodit jen na jednu stranu
+a snizuje silu na pulku misto na 1
+
+- změna Počítání bodů: pevné pouto -> povzbuzení -> demotivace -> počasí -> velitelský roh
+
+pak sou tam uz asi jen schopností, ktere nevim jestli chceme  nejak zanest nebo se to bude klikat (napr jednotka sezere jinou a pricte si body)
+
+
+------------
+
+
+Weather - spocitat decimalne a pak zaokrouhlit - mozna udelat i horn na linii - Done
+
++-1 se pocita i na tu samou kartu - Done
+
+pridat editace karty - click na zmenu zaklani sily - Bude se odstanovat a pridavat nova
+
+zlate karty muzou mit dalsi vlastnost - Done
+
+lime -> linie , predni, stredova, zadni - Done
+
+?? bondy jako skupiny karet
+
+novy att imubita vuci pocasi
+
+odstaneni karty -> karta top - Done
+

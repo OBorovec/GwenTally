@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:gwentboard/route_generator.dart';
-import 'package:gwentboard/components/_layout/root_page.dart';
+import 'package:gwentboard/components/shared/layout/root_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -22,12 +22,10 @@ class HomePage extends StatelessWidget {
           ),
           Expanded(
             child: AppBoardOption(
-              text: 'Gwent 2.0 \n Coming soon',
+              text: 'Gwent 2.0',
               colorBackground: Theme.of(context).colorScheme.background,
               colorText: Theme.of(context).colorScheme.onBackground,
-              onTap: () => null,
-              // onTap: () =>
-              //     Navigator.pushNamed(context, RoutePaths.originalBoard),
+              onTap: () => Navigator.pushNamed(context, RoutePaths.v2Board),
             ),
           ),
         ],

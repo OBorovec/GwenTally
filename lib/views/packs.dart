@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:gwentboard/components/_layout/side_page.dart';
+import 'package:gwentboard/components/shared/layout/side_page.dart';
 
 // NOTE: This page has not been implemented yet.
 

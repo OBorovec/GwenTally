@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:gwentboard/components/_layout/side_page.dart';
-import 'package:gwentboard/components/title_divider.dart';
-import 'package:gwentboard/utils/board_sizer.dart';
+import 'package:gwentboard/components/shared/layout/side_page.dart';
+import 'package:gwentboard/components/shared/title_divider.dart';
+import 'package:gwentboard/views/board_original/board_sizer.dart';
 
 // NOTE: This page has not been implemented yet.
 

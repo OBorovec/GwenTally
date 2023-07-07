@@ -1,9 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:gwentboard/bloc/game/game_bloc.dart';
 
 class MarchStartDialog extends StatefulWidget {
   const MarchStartDialog({
@@ -45,7 +42,6 @@ class _MarchStartDialogState extends State<MarchStartDialog> {
                             Future.delayed(const Duration(seconds: 2), () {
                               Navigator.pop(context);
                             });
-                            // TODO: Add event to bloc to set the starting side
                           },
                         ),
                       ),

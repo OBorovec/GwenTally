@@ -11,3 +11,5 @@
 - [Scull icon - Icon library](https://icon-library.com/icon/scull-icon-20.html)
 - [Horn icon created by Freepik - Flaticon](https://www.flaticon.com/premium-icon/horn_2222887?related_id=2222887&origin=search)
 - [Crown icon created by Ayub Irawan - Flaticon](https://www.flaticon.com/free-icon/crown_2476413)
+- [Random icons created by Freepik - Flaticon](https://www.flaticon.com/free-icon/coin-toss_1715497)
+- [Hero - Armor icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/armor)
