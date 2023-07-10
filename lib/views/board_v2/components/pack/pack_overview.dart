@@ -60,14 +60,10 @@ class _PackTopCard extends StatelessWidget {
     return BlocBuilder<PackBloc, PackState>(
       buildWhen: (previous, current) => previous.topCard != current.topCard,
       builder: (context, state) {
-        CardConfig packTopConfig = context.read<BoardConfig>().packTopCard;
         return BoardCard(
           data: state.topCard,
-          config: packTopConfig,
           isDraggable: true,
-          childWhenDragging: BoardCard(
-            config: packTopConfig,
-          ),
+          childWhenDragging: BoardCard(),
         );
       },
     );
@@ -88,11 +84,8 @@ class _PackRecentCards extends StatelessWidget {
             children: state.recentCards
                 .map((CardData card) => BoardCard(
                       data: card,
-                      config: boardCardConfig,
                       isDraggable: true,
-                      childWhenDragging: BoardCard(
-                        config: boardCardConfig,
-                      ),
+                      childWhenDragging: BoardCard(),
                     ))
                 .toList());
       },

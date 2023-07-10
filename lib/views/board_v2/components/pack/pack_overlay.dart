@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:gwentboard/constants/gwent_icons.dart';
-import 'package:gwentboard/views/board_v2/board_config.dart';
 import 'package:gwentboard/views/board_v2/components/pack/bloc/pack_bloc.dart';
 
 class PackOverlayConfig {
@@ -27,7 +26,7 @@ class PackOverlayConfig {
   });
 }
 
-class PackOverlay extends StatelessWidget {
+class PackOverlay extends StatefulWidget {
   final String? heroTag;
 
   const PackOverlay({
@@ -36,53 +35,56 @@ class PackOverlay extends StatelessWidget {
   });
 
   @override
+  State<PackOverlay> createState() => _PackOverlayState();
+}
+
+class _PackOverlayState extends State<PackOverlay> {
+  final List<_ExpandingActionButtonData> attOptionBtns = attValues
+      .map((PackCardAtt attribute) => _ExpandingActionButtonData(
+            event: PackEventSetAtt(value: attribute),
+            child: _AttOptionBtn(cardAtt: attribute),
+          ))
+      .toList();
+
+  final List<_ExpandingActionButtonData> numOptionBtns = numValues
+      .map((int value) => _ExpandingActionButtonData(
+            event: PackEventSetNum(value: value),
+            child: Text(value.toString()),
+          ))
+      .toList();
+
+  @override
   Widget build(BuildContext context) {
-    final PackOverlayConfig config =
-        context.read<BoardConfig>().packOverlayConfig;
-    final double size = 2 * config.radius;
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        BlocBuilder<PackBloc, PackState>(
-          buildWhen: (previous, current) => previous.stage != current.stage,
-          builder: (context, state) {
-            return IgnorePointer(
-              ignoring: state.stage == PackStage.closed,
-              child: AnimatedOpacity(
-                opacity: state.stage == PackStage.closed ? 0 : 1,
-                duration: const Duration(milliseconds: 500),
-                child: Container(color: Colors.black.withOpacity(0.5)),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SizedBox.square(
+          dimension: constraints.maxWidth,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              _ExpandingPicker(
+                size: constraints.maxWidth,
+                radius: constraints.maxWidth * 0.3,
+                items: attOptionBtns,
+                trigger: PackStage.att,
               ),
-            );
-          },
-        ),
-        Align(
-          alignment: Alignment.center,
-          child: SizedBox(
-            height: size,
-            width: size,
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                PackAttPicker(size: config.radius, radius: config.radius * 0.8),
-                PackNumPicker(size: config.radius, radius: config.radius),
-                const Align(
-                  alignment: Alignment.center,
-                  child: PackCloseBtn(),
-                ),
-              ],
-            ),
+              _ExpandingPicker(
+                size: constraints.maxWidth,
+                radius: constraints.maxWidth * 0.4,
+                items: numOptionBtns,
+                trigger: PackStage.num,
+              ),
+              const Center(child: _PackCloseBtn()),
+            ],
           ),
-        ),
-      ],
+        );
+      },
     );
   }
 }
 
-class PackCloseBtn extends StatelessWidget {
-  const PackCloseBtn({
-    super.key,
-  });
+class _PackCloseBtn extends StatelessWidget {
+  const _PackCloseBtn();
 
   @override
   Widget build(BuildContext context) {
@@ -91,40 +93,24 @@ class PackCloseBtn extends StatelessWidget {
       builder: (context, state) {
         final bool isVisible = state.stage != PackStage.closed;
         return IgnorePointer(
-          ignoring: state.stage == PackStage.closed,
-          child: AnimatedContainer(
-            transformAlignment: Alignment.center,
-            transform: Matrix4.diagonal3Values(
-              !isVisible ? 0.7 : 1.0,
-              !isVisible ? 0.7 : 1.0,
-              1.0,
-            ),
+          ignoring: !isVisible,
+          child: AnimatedOpacity(
+            opacity: !isVisible ? 0.0 : 1.0,
+            curve: const Interval(0.25, 1.0, curve: Curves.easeInOut),
             duration: const Duration(milliseconds: 250),
-            curve: const Interval(0.0, 0.5, curve: Curves.easeOut),
-            child: AnimatedOpacity(
-              opacity: !isVisible ? 0.0 : 1.0,
-              curve: const Interval(0.25, 1.0, curve: Curves.easeInOut),
-              duration: const Duration(milliseconds: 250),
-              child: SizedBox(
-                width: 56,
-                height: 56,
-                child: Center(
-                  child: Material(
-                    shape: const CircleBorder(),
-                    clipBehavior: Clip.antiAlias,
-                    elevation: 4,
-                    child: InkWell(
-                      onTap: () => BlocProvider.of<PackBloc>(context).add(
-                        const PackEventClose(),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Icon(
-                          Icons.close,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-                    ),
+            child: Material(
+              shape: const CircleBorder(),
+              clipBehavior: Clip.antiAlias,
+              elevation: 4,
+              child: InkWell(
+                onTap: () => BlocProvider.of<PackBloc>(context).add(
+                  const PackEventClose(),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Icon(
+                    Icons.close,
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
               ),
@@ -139,7 +125,7 @@ class PackCloseBtn extends StatelessWidget {
 class _ExpandingPicker extends StatefulWidget {
   final double size;
   final double radius;
-  final List<Widget> items;
+  final List<_ExpandingActionButtonData> items;
   final PackStage trigger;
 
   const _ExpandingPicker({
@@ -158,6 +144,15 @@ class __ExpandingPickerState extends State<_ExpandingPicker>
   late final AnimationController _controller;
   late final Animation<double> _animation;
 
+  late final double _stepDegrees = 360.0 / widget.items.length;
+  late final double _optBtnSize = sqrt(pow(widget.radius, 2) +
+      pow(widget.radius, 2) -
+      2 * widget.radius * widget.radius * cos(_stepDegrees * pi / 180));
+  late final Offset stackCenter = Offset(
+    widget.size / 2 - _optBtnSize / 2,
+    widget.size / 2 - _optBtnSize / 2,
+  );
+
   @override
   void initState() {
     super.initState();
@@ -175,14 +170,7 @@ class __ExpandingPickerState extends State<_ExpandingPicker>
 
   @override
   Widget build(BuildContext context) {
-    final PackOverlayConfig config =
-        context.read<BoardConfig>().packOverlayConfig;
-    final step = 360.0 / widget.items.length;
-    final childCenterOffset = Offset(
-      widget.size - config.optBtnSize / 2, // To the left
-      widget.size - config.optBtnSize / 2, // To the top
-    );
-    return BlocListener<PackBloc, PackState>(
+    return BlocConsumer<PackBloc, PackState>(
       listenWhen: (previous, current) => previous.stage != current.stage,
       listener: (context, state) {
         if (state.stage == widget.trigger) {
@@ -193,163 +181,101 @@ class __ExpandingPickerState extends State<_ExpandingPicker>
           _controller.reverse();
         }
       },
-      child: BlocBuilder<PackBloc, PackState>(
-        builder: (context, state) {
-          return IgnorePointer(
-            ignoring: state.stage != widget.trigger,
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                for (var i = 0, angleInDegrees = -90.0;
-                    i < widget.items.length;
-                    i++, angleInDegrees += step)
-                  _ExpandingActionButton(
-                    childCenterOffset: childCenterOffset,
-                    directionInDegrees: angleInDegrees,
-                    maxDistance: widget.radius,
-                    progress: _animation,
-                    child: widget.items[i],
-                  ),
-              ],
-            ),
-          );
-        },
-      ),
-    );
-  }
-}
-
-class _ExpandingActionButton extends StatelessWidget {
-  final Offset childCenterOffset;
-  final double directionInDegrees;
-  final double maxDistance;
-  final Animation<double> progress;
-  final Widget child;
-
-  const _ExpandingActionButton({
-    required this.childCenterOffset,
-    required this.directionInDegrees,
-    required this.maxDistance,
-    required this.progress,
-    required this.child,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return AnimatedBuilder(
-      animation: progress,
-      builder: (context, child) {
-        final offset = Offset.fromDirection(
-          directionInDegrees * (pi / 180.0),
-          progress.value * maxDistance,
-        );
-        return Positioned(
-          left: childCenterOffset.dx + offset.dx,
-          top: childCenterOffset.dy + offset.dy,
-          child: Transform.rotate(
-            angle: (1.0 - progress.value) * pi / 2,
-            child: child,
+      buildWhen: (previous, current) => previous.stage != current.stage,
+      builder: (context, state) {
+        return IgnorePointer(
+          ignoring: state.stage != widget.trigger,
+          child: Stack(
+            fit: StackFit.expand,
+            clipBehavior: Clip.none,
+            children: buildChildren(),
           ),
         );
       },
-      child: FadeTransition(
-        opacity: progress,
-        child: Material(
-          shape: const CircleBorder(),
-          clipBehavior: Clip.antiAlias,
-          color: theme.colorScheme.secondary,
-          elevation: 4,
-          child: child,
+    );
+  }
+
+  List<Widget> buildChildren() {
+    final List<Widget> children = [];
+    for (var i = 0, angleInDegrees = -90.0;
+        i < widget.items.length;
+        i++, angleInDegrees += _stepDegrees) {
+      Widget child = _OptButton(
+        optBtnSize: _optBtnSize,
+        data: widget.items[i],
+      );
+      children.add(
+        AnimatedBuilder(
+          animation: _animation,
+          builder: (context, child) {
+            final offset = Offset.fromDirection(
+              angleInDegrees * (pi / 180.0),
+              _animation.value * widget.radius,
+            );
+            return Positioned(
+              left: stackCenter.dx + offset.dx,
+              top: stackCenter.dy + offset.dy,
+              child: Transform.rotate(
+                angle: (1.0 - _animation.value) * pi / 2,
+                child: child,
+              ),
+            );
+          },
+          child: FadeTransition(
+            opacity: _animation,
+            child: child,
+          ),
         ),
-      ),
-    );
+      );
+    }
+    return children;
   }
 }
 
-class PackAttPicker extends StatelessWidget {
-  final double size;
-  final double radius;
+class _ExpandingActionButtonData {
+  final PackEvent event;
+  final Widget child;
 
-  PackAttPicker({
-    super.key,
-    required this.size,
-    required this.radius,
+  _ExpandingActionButtonData({
+    required this.event,
+    required this.child,
   });
-
-  final List<Widget> attOptionBtns = attValues
-      .map(
-        (value) => _AttOptionBtn(cardAtt: value),
-      )
-      .toList();
-
-  @override
-  Widget build(BuildContext context) {
-    return _ExpandingPicker(
-      size: size,
-      radius: radius,
-      items: attOptionBtns,
-      trigger: PackStage.att,
-    );
-  }
 }
 
-class PackNumPicker extends StatelessWidget {
-  final double size;
-  final double radius;
+class _OptButton extends StatelessWidget {
+  final double optBtnSize;
+  final _ExpandingActionButtonData data;
 
-  PackNumPicker({
-    super.key,
-    required this.radius,
-    required this.size,
-  });
-
-  final List<Widget> numOptionBtns = numValues
-      .map(
-        (value) => _NumValueBtn(
-          value: value,
-        ),
-      )
-      .toList();
-
-  @override
-  Widget build(BuildContext context) {
-    return _ExpandingPicker(
-      size: size,
-      radius: radius,
-      items: numOptionBtns,
-      trigger: PackStage.num,
-    );
-  }
-}
-
-class _NumValueBtn extends StatelessWidget {
-  final int value;
-
-  const _NumValueBtn({
-    required this.value,
+  const _OptButton({
+    required this.optBtnSize,
+    required this.data,
   });
 
   @override
   Widget build(BuildContext context) {
-    final PackOverlayConfig config =
-        context.read<BoardConfig>().packOverlayConfig;
-    return InkWell(
-      onTap: () => BlocProvider.of<PackBloc>(context).add(
-        PackEventSetNum(
-          value: value,
-        ),
-      ),
-      child: SizedBox(
-        width: config.optBtnSize,
-        height: config.optBtnSize,
-        child: Center(
-          child: Text(
-            value.toString(),
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onSecondary,
-                  fontSize: config.optBtnFont,
+    ThemeData theme = Theme.of(context);
+    return Padding(
+      padding: EdgeInsets.all(optBtnSize * 0.1),
+      child: Material(
+        shape: const CircleBorder(),
+        clipBehavior: Clip.antiAlias,
+        color: theme.colorScheme.secondary,
+        elevation: 4,
+        child: InkWell(
+          onTap: () => BlocProvider.of<PackBloc>(context).add(
+            data.event,
+          ),
+          child: SizedBox(
+            width: optBtnSize * 0.8,
+            height: optBtnSize * 0.8,
+            child: Padding(
+              padding: EdgeInsets.all(optBtnSize * 0.2),
+              child: FittedBox(
+                child: Center(
+                  child: data.child,
                 ),
+              ),
+            ),
           ),
         ),
       ),
@@ -366,55 +292,30 @@ class _AttOptionBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final PackOverlayConfig config =
-        context.read<BoardConfig>().packOverlayConfig;
-    return InkWell(
-      onTap: () => BlocProvider.of<PackBloc>(context).add(
-        PackEventSetAtt(value: cardAtt),
-      ),
-      child: SizedBox(
-        width: config.optBtnSize,
-        height: config.optBtnSize,
-        child: Center(
-          child: _getCardIcon(cardAtt, context),
-        ),
-      ),
-    );
-  }
-
-  Widget _getCardIcon(PackCardAtt cardAtt, BuildContext context) {
-    final PackOverlayConfig config =
-        context.read<BoardConfig>().packOverlayConfig;
-
     if (cardAtt == PackCardAtt.horn) {
       return ImageIcon(
         GwentIcons.commanderHorn,
         color: Theme.of(context).colorScheme.onSecondary,
-        size: config.optBtnIconSize,
       );
     } else if (cardAtt == PackCardAtt.bond) {
       return Icon(
         GwentIcons.tightBond,
         color: Theme.of(context).colorScheme.onSecondary,
-        size: config.optBtnIconSize,
       );
     } else if (cardAtt == PackCardAtt.morale) {
       return Icon(
         GwentIcons.morale,
         color: Theme.of(context).colorScheme.onSecondary,
-        size: config.optBtnIconSize,
       );
     } else if (cardAtt == PackCardAtt.demorale) {
       return Icon(
         GwentIcons.demorale,
         color: Theme.of(context).colorScheme.onSecondary,
-        size: config.optBtnIconSize,
       );
     } else if (cardAtt == PackCardAtt.hero) {
       return ImageIcon(
         GwentIcons.hero,
         color: Colors.yellow[700],
-        size: config.optBtnIconSize,
       );
     } else {
       return Text(
